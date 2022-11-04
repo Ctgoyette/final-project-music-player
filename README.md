@@ -1,1 +1,6 @@
 # final-project-music-player
+1. I will be working by myself for this project
+
+2. For my final project, I am proposing creating my own music player application. The player will have a GUI in which the user's music library will be displayed and allow them to select a songs to play. Once a song is playing, users will be able to perform all basic music player functionality including pausing and playing a song, as well as tracking to a specific time in the song. The GUI will allow users to view their library in several different formats including viewing songs by artist and viewing songs by album. The GUI will also allow users to make their own playlists, add songs to playlists, and add songs to their queue. For some more advanced functiionality, the GUI will also create suggested playlists based on the user's interests, and these interests can be updated at any time. Lastly, the GUI will allow users to enter the folder or folders where the program should look for the player's music library. Time permitting, the program may also allow users to specify a music server they have to stream their music from anywhere without having to store the music on their computer (I have a Plex server at home I'm going to attempt to interface with).
+
+3. At the very least I will have to write classes for 'song', 'playlist', 
