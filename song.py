@@ -1,12 +1,13 @@
 class Song:
-    def __init__(self, song_title = '', song_artist = '', song_duration = '', song_album = '', song_genre = ''):
+    def __init__(self, song_title = '', song_artist = '', song_duration = '', song_album = '', song_year = '', song_genre = ''):
         '''
         Initializes all attributes
         '''
         self.song_title = song_title
+        self.song_artist = song_artist
         self.song_duration = song_duration
         self.song_album = song_album
-        self.song_artist = song_artist
+        self.song_year = song_year
         self.song_genre = song_genre
 
     def play(self):
@@ -17,49 +18,57 @@ class Song:
         '''
         Pauses the specified song
         '''
-    def get_title():
+    def get_title(self):
         '''
         Gets the name of the specified song 
         '''
-    def set_title():
+    def set_title(self, title_to_set):
         '''
-        Gets the name of the specified song 
+        Sets the name of the specified song 
         '''
-    def get_duration():
+    def get_artist(self):
         '''
-        Gets the name of the specified song 
+        Gets the name of the artist of the specified song 
         '''
-    def set_duration():
+    def set_artist(self, artist_to_set):
         '''
-        Gets the name of the specified song 
+        Sets the name of the artist of the specified song 
         '''
-    def get_album():
+    def get_duration(self):
         '''
-        Gets the name of the specified song 
+        Gets the duration of the specified song 
         '''
-    def set_album():
+    def set_duration(self, duration_to_set):
         '''
-        Gets the name of the specified song 
+        Sets the duration of the specified song 
         '''
-    def get_artist():
+    def get_album(self):
         '''
-        Gets the name of the specified song 
+        Gets the name of the album that the specified song belongs to
         '''
-    def set_artist():
+    def set_album(self, album_to_set):
         '''
-        Gets the name of the specified song 
+        Sets the name of the album that the specified song belongs to
         '''
-    def get_genre():
+    def get_year(self):
         '''
-        Gets the name of the specified song 
+        Gets the release year of the specified song 
         '''
-    def set_genre():
+    def set_year(self, year_to_set):
         '''
-        Gets the name of the specified song 
+        Sets the release year of the specified song 
+        '''
+    def get_genre(self):
+        '''
+        Gets the genre of the specified song 
+        '''
+    def set_genre(self, genre_to_set):
+        '''
+        Sets the genre of the specified song 
         '''
     
-    title = property(fget = get_title, fset = set_title, doc='Title of song')
-    duration = property(fget = get_duration, fset = set_duration, doc='Duration of song')
-    album = property(fget = get_album, fset = set_album, doc='Album the song is on')
-    artist = property(fget = get_artist, fset = set_artist, doc='Song artist')
-    genre = property(fget = get_genre, fset = set_genre, doc='Genre of artist')
+    title = property(fget = get_title, fset = set_title, doc = 'Title of song')
+    duration = property(fget = get_duration, fset = set_duration, doc = 'Duration of song')
+    album = property(fget = get_album, fset = set_album, doc = 'Album the song is on')
+    artist = property(fget = get_artist, fset = set_artist, doc = 'Song artist')
+    genre = property(fget = get_genre, fset = set_genre, doc = 'Genre of song')
