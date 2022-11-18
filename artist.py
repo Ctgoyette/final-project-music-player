@@ -6,6 +6,3 @@ class Artist:
         self.artist_name = artist_name
         self.artist_albums = artist_albums
         self.artist_album_count = len(artist_albums)
-
-
-# 'albums', 'title', and 'album_count'
