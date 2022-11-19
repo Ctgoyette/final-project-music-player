@@ -16,43 +16,43 @@ class Album:
         '''
     def get_name(self):
         '''
-        Gets the name of the specified album 
+        Gets the name of the album 
         '''
     def set_name(self, name_to_set):
         '''
-        Sets the name of the specified album 
+        Sets the name of the album to the specified name
         '''
     def get_artist(self):
         '''
-        Gets the name of the specified album artist
+        Gets the name of the album artist
         '''
     def set_artist(self, artist_to_set):
         '''
-        Sets the name of the specified album artist 
+        Sets the name of the album artist to the specfied artist name
         '''
     def get_duration(self):
         '''
-        Gets the duration of the specified album 
+        Gets the duration of the album 
         '''
     def set_duration(self, duration_to_set):
         '''
-        Sets the duration of the specified album 
+        Sets the duration of the album to the specfied duration
         '''
     def get_year(self):
         '''
-        Gets the release year of the specified album 
+        Gets the release year of the album 
         '''
     def set_year(self, year_to_set):
         '''
-        Sets the release year of the specified album 
+        Sets the release year of the album to the specified year
         '''
     def get_genre(self):
         '''
-        Gets the genre of the specified album 
+        Gets the genre of the album 
         '''
     def set_genre(self, genre_to_set):
         '''
-        Sets the genre of the specified album 
+        Sets the genre of the album to the specified genre
         '''
     def get_song_count(self):
         '''
@@ -66,6 +66,10 @@ class Album:
         '''
         Removes a song from an album
         '''
+    def get_songs(self):
+        '''
+        Gets the songs in an album
+        '''
     
     name = property(fget = get_name, fset = set_name, doc = 'Name of album')
     artist = property(fget = get_artist, fset = set_artist, doc = 'Album artist')
@@ -73,4 +77,5 @@ class Album:
     year = property(fget = get_year, fset = set_year, doc = 'Year album was released')
     genre = property(fget = get_genre, fset = set_genre, doc = 'Genre of album')
     song_count = property(fget = get_song_count, doc = 'Number of songs in album')
+    songs = property(fget = get_songs, doc = 'Songs in album')
 

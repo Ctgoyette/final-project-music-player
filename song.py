@@ -12,59 +12,59 @@ class Song:
 
     def play(self):
         '''
-        Plays the specified song
+        Plays the song
         '''
     def pause(self):
         '''
-        Pauses the specified song
+        Pauses the song
         '''
     def get_title(self):
         '''
-        Gets the name of the specified song 
+        Gets the title of the song 
         '''
     def set_title(self, title_to_set):
         '''
-        Sets the name of the specified song 
+        Sets the title of the song to the specified title
         '''
     def get_artist(self):
         '''
-        Gets the name of the artist of the specified song 
+        Gets the name of the artist of the song 
         '''
     def set_artist(self, artist_to_set):
         '''
-        Sets the name of the artist of the specified song 
+        Sets the name of the artist of the song to the specified artist name
         '''
     def get_duration(self):
         '''
-        Gets the duration of the specified song 
+        Gets the duration of the song 
         '''
     def set_duration(self, duration_to_set):
         '''
-        Sets the duration of the specified song 
+        Sets the duration of the song to the specified duration
         '''
     def get_album(self):
         '''
-        Gets the name of the album that the specified song belongs to
+        Gets the name of the album that the song belongs to
         '''
     def set_album(self, album_to_set):
         '''
-        Sets the name of the album that the specified song belongs to
+        Sets the name of the album that the song belongs to the specifed album
         '''
     def get_year(self):
         '''
-        Gets the release year of the specified song 
+        Gets the release year of the song 
         '''
     def set_year(self, year_to_set):
         '''
-        Sets the release year of the specified song 
+        Sets the release year of the song to the specified year
         '''
     def get_genre(self):
         '''
-        Gets the genre of the specified song 
+        Gets the genre of the song 
         '''
     def set_genre(self, genre_to_set):
         '''
-        Sets the genre of the specified song 
+        Sets the genre of the song to the specifed genre
         '''
     
     title = property(fget = get_title, fset = set_title, doc = 'Title of song')
