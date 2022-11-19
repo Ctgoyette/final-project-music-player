@@ -1,5 +1,9 @@
+from artist import *
+from playlist import *
+from queue import *
+
 class MusicLibrary:
-    def __init__(self, artists, playlists, queue):
+    def __init__(self, artists = [], playlists = [], queue = Queue()):
         self.artists = artists
         self.playlists = playlists
         self.queue = queue
