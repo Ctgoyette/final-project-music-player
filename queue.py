@@ -1,7 +1,7 @@
 class Queue:
     def __init__(self, songs = []):
-        self.songs = songs
-        self.song_count = len(songs)
+        self.hidden_songs = songs
+        self.hidden_song_count = len(songs)
 
     def add_song(self, song_to_add):
         '''
