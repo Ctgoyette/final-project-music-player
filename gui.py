@@ -5,6 +5,9 @@ import sys
 import os
 
 class PlayerWindow(Ui_MainWindow):
+    def __init__(self):
+        self.MainWindow = QtWidgets.QMainWindow()
+        self.setupUi(self.MainWindow)
     def add_songs(self, songs_to_add):
         self.song_list.addItems(songs_to_add)
 
@@ -15,10 +18,8 @@ my_library = MusicLibrary()
 #########################################################
 
 app = QtWidgets.QApplication(sys.argv)
-MainWindow = QtWidgets.QMainWindow()
 ui = PlayerWindow()
-ui.setupUi(MainWindow)
 ui.add_songs(my_library.songs)
-MainWindow.show()
+ui.MainWindow.show()
 sys.exit(app.exec_())
 

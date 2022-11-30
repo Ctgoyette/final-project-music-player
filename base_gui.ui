@@ -31,28 +31,28 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="artist_view">
+       <widget class="QPushButton" name="button_artist_view">
         <property name="text">
          <string>Artists</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="album_view">
+       <widget class="QPushButton" name="button_album_view">
         <property name="text">
          <string>Albums</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="song_view">
+       <widget class="QPushButton" name="button_song_view">
         <property name="text">
          <string>Songs</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="playlist_view">
+       <widget class="QPushButton" name="button_playlist_view">
         <property name="text">
          <string>Playlists</string>
         </property>
@@ -74,7 +74,45 @@
      </layout>
     </item>
     <item>
-     <widget class="QListWidget" name="song_list"/>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="currentIndex">
+       <number>3</number>
+      </property>
+      <widget class="QWidget" name="artist_page">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QListWidget" name="artist_list"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="album_view_page">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QListWidget" name="album_list"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="song_view_page">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QListWidget" name="song_list"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="playlist_view_page">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QListView" name="playlist_list"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
