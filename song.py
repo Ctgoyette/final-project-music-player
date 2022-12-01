@@ -1,14 +1,24 @@
+import eyed3
+# eyed3.log.setLevel("ERROR")
 class Song:
-    def __init__(self, song_title = '', song_artist = '', song_duration = '', song_album = '', song_year = '', song_genre = ''):
+    def __init__(self, file, song_title = '', song_artist = '', song_duration = '', song_album = '', song_year = '', song_genre = ''):
         '''
         Initializes all attributes
         '''
-        self.song_title = song_title
-        self.song_artist = song_artist
-        self.song_duration = song_duration
-        self.song_album = song_album
-        self.song_year = song_year
-        self.song_genre = song_genre
+        self.audio_file = eyed3.load(file)
+        self.song_title = self.audio_file.tag.title
+        self.song_artist = self.audio_file.tag.artist
+        self.song_duration = self.audio_file.info.time_secs
+        self.song_duration_formatted = self.convert_duration_to_display_format()
+        self.song_album = self.audio_file.tag.album
+        self.song_year = self.audio_file.tag.getBestDate()
+        self.song_genre = self.audio_file.tag.genre
+
+    def convert_duration_to_display_format(self):
+        minutes = int(self.song_duration) // 60
+        seconds = int(self.song_duration) % 60
+        formatted_duration = '{0}:{0:0>2}'.format(minutes, seconds)
+        return formatted_duration
 
     def play(self):
         '''
