@@ -10,7 +10,12 @@ class MusicLibrary:
         self.list_of_songs = []
         self.list_of_albums = []
         self.list_of_artists = []
+        self.num_songs = len(self.list_of_songs)
+        self.num_albums = len(self.list_of_albums)
+        self.num_artists = len(self.list_of_artists)
         self.find_songs()
+        self.sort_list(self.list_of_artists, 'name')
+        self.sort_list(self.list_of_albums, 'name')
 
     def find_songs(self, location = None):
         if location is None:
@@ -51,6 +56,7 @@ class MusicLibrary:
         if is_add_artist:
             self.add_artist(new_song)
         self.list_of_songs.append(new_song)
+        self.num_songs = len(self.list_of_songs)
     
     def add_album(self, song_with_album_info):
         '''
@@ -58,6 +64,7 @@ class MusicLibrary:
         '''
         new_album = Album(song_with_album_info.album, song_with_album_info.artist, song_with_album_info.year, song_with_album_info.genre)
         self.list_of_albums.append(new_album)
+        self.num_albums = len(self.list_of_albums)
 
     def add_artist(self, song_with_artist_info):
         '''
@@ -65,6 +72,7 @@ class MusicLibrary:
         '''
         new_artist = Artist(song_with_artist_info.artist)
         self.list_of_artists.append(new_artist)
+        self.num_artists = len(self.list_of_artists)
 
     def get_songs(self):
         return self.list_of_songs
@@ -74,6 +82,17 @@ class MusicLibrary:
     
     def get_artists(self):
         return self.list_of_artists
+
+    def sort_list(self, list_to_sort, sort_attribute):
+        for current_index in range(1, len(list_to_sort)):
+                sort_key = getattr(list_to_sort[current_index], sort_attribute)
+                object_key = list_to_sort[current_index]
+
+                last_index = current_index - 1
+                while last_index >= 0 and sort_key < getattr(list_to_sort[last_index], sort_attribute):
+                    list_to_sort[last_index + 1] = list_to_sort[last_index]
+                    last_index -= 1
+                list_to_sort[last_index + 1] = object_key
 
     def create_playlist(self, playlist_name):
         '''
