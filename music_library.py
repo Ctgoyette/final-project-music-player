@@ -14,8 +14,8 @@ class MusicLibrary:
         self.num_albums = len(self.list_of_albums)
         self.num_artists = len(self.list_of_artists)
         self.find_songs()
-        self.sort_list(self.list_of_artists, 'name')
-        self.sort_list(self.list_of_albums, 'name')
+        self.sort_object_list(self.list_of_artists, 'name')
+        self.sort_object_list(self.list_of_albums, 'name')
 
     def find_songs(self, location = None):
         if location is None:
@@ -83,7 +83,14 @@ class MusicLibrary:
     def get_artists(self):
         return self.list_of_artists
 
-    def sort_list(self, list_to_sort, sort_attribute):
+    def sort_object_list(self, list_to_sort, sort_attribute):
+        '''
+        Sorts the specifed list of objects by the specified object attribute
+
+        Inputs:
+            - (list) list of objects to sort => list_to_sort
+            - (string) name of the attribute to sort by => sort_attribute
+        '''
         for current_index in range(1, len(list_to_sort)):
                 sort_key = getattr(list_to_sort[current_index], sort_attribute)
                 object_key = list_to_sort[current_index]
