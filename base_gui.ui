@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>816</width>
-    <height>669</height>
+    <width>685</width>
+    <height>696</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -156,7 +156,7 @@
     <item>
      <widget class="QStackedWidget" name="content_type_view_stack">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="library_view">
        <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -179,7 +179,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QComboBox" name="library_list_view_dropdown">
+            <widget class="QComboBox" name="library_view_dropdown">
              <property name="font">
               <font>
                <family>Nirmala UI</family>
@@ -361,22 +361,49 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="playlist_view_page">
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <item>
-             <widget class="QListView" name="playlist_list">
-              <property name="modelColumn">
-               <number>0</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="playlist_view"/>
+      <widget class="QWidget" name="playlist_view">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>11</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="playlist_list"/>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>11</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -386,7 +413,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>816</width>
+     <width>685</width>
      <height>26</height>
     </rect>
    </property>
