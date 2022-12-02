@@ -228,7 +228,7 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="artist_page">
            <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -241,23 +241,33 @@
                <number>1</number>
               </property>
               <property name="columnCount">
-               <number>3</number>
+               <number>1</number>
               </property>
               <attribute name="horizontalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="horizontalHeaderCascadingSectionResizes">
                <bool>false</bool>
               </attribute>
               <attribute name="horizontalHeaderHighlightSections">
                <bool>false</bool>
               </attribute>
+              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>false</bool>
+              </attribute>
               <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="verticalHeaderCascadingSectionResizes">
                <bool>false</bool>
               </attribute>
               <attribute name="verticalHeaderHighlightSections">
                <bool>false</bool>
               </attribute>
               <row/>
-              <column/>
-              <column/>
               <column/>
              </widget>
             </item>
@@ -324,7 +334,16 @@
               <attribute name="horizontalHeaderVisible">
                <bool>false</bool>
               </attribute>
+              <attribute name="horizontalHeaderCascadingSectionResizes">
+               <bool>false</bool>
+              </attribute>
               <attribute name="horizontalHeaderHighlightSections">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
                <bool>false</bool>
               </attribute>
               <attribute name="verticalHeaderVisible">

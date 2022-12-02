@@ -1,16 +1,18 @@
 class Artist:
-    def __init__(self, artist_name = '', artist_albums = []):
+    def __init__(self, artist_name):
         '''
         Initializes all attributes
         '''
         self.artist_name = artist_name
-        self.artist_albums = artist_albums
-        self.artist_album_count = len(artist_albums)
+        self.artist_albums = []
+        self.artist_album_count = len(self.artist_albums)
 
     def get_name(self):
         '''
         Gets the name of the artist
         '''
+        return self.artist_name
+
     def set_name(self, name_to_set):
         '''
         Sets the name of the artist to the specified name

@@ -5,7 +5,6 @@ class Album:
         self.album_songs = []
         self.album_name = album_name
         self.album_artist = album_artist
-        # self.album_duration = album_duration
         self.album_year = album_year
         self.album_genre = album_genre
         self.album_song_count = len(self.album_songs)
@@ -18,6 +17,8 @@ class Album:
         '''
         Gets the name of the album 
         '''
+        return self.album_name
+
     def set_name(self, name_to_set):
         '''
         Sets the name of the album to the specified name
@@ -26,22 +27,19 @@ class Album:
         '''
         Gets the name of the album artist
         '''
+        return self.album_artist
+
     def set_artist(self, artist_to_set):
         '''
         Sets the name of the album artist to the specfied artist name
         '''
-    def get_duration(self):
-        '''
-        Gets the duration of the album 
-        '''
-    def set_duration(self, duration_to_set):
-        '''
-        Sets the duration of the album to the specfied duration
-        '''
+
     def get_year(self):
         '''
         Gets the release year of the album 
         '''
+        return self.album_year
+
     def set_year(self, year_to_set):
         '''
         Sets the release year of the album to the specified year
@@ -50,6 +48,8 @@ class Album:
         '''
         Gets the genre of the album 
         '''
+        return self.album_genre
+
     def set_genre(self, genre_to_set):
         '''
         Sets the genre of the album to the specified genre
@@ -73,7 +73,6 @@ class Album:
     
     name = property(fget = get_name, fset = set_name, doc = 'Name of album')
     artist = property(fget = get_artist, fset = set_artist, doc = 'Album artist')
-    duration = property(fget = get_duration, fset = set_duration, doc = 'Duration of album')
     year = property(fget = get_year, fset = set_year, doc = 'Year album was released')
     genre = property(fget = get_genre, fset = set_genre, doc = 'Genre of album')
     song_count = property(fget = get_song_count, doc = 'Number of songs in album')

@@ -16,10 +16,13 @@ class PlayerWindow(Ui_MainWindow):
         self.album_list_index = 1
         self.song_list_index = 1
         self.switch_list_view()
+        self.song_list.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.artist_list.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.album_list.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
 
     def add_table_row(self, table):
-        rowCount = table.rowCount()
-        table.insertRow(rowCount)
+        row_count = table.rowCount()
+        table.insertRow(row_count)
 
     def add_songs_to_display(self, songs_to_add):
         self.song_list.setItem(0, 0, QtWidgets.QTableWidgetItem('Title'))
@@ -43,11 +46,20 @@ class PlayerWindow(Ui_MainWindow):
         row = 1
         for album in albums_to_add:
             self.add_table_row(self.album_list)
-            self.album_list.setItem(row, 0, QtWidgets.QTableWidgetItem(album.album_name))
-            self.album_list.setItem(row, 1, QtWidgets.QTableWidgetItem(album.album_artist))
-            self.album_list.setItem(row, 2, QtWidgets.QTableWidgetItem(str(album.album_year)))
+            self.album_list.setItem(row, 0, QtWidgets.QTableWidgetItem(album.name))
+            self.album_list.setItem(row, 1, QtWidgets.QTableWidgetItem(album.artist))
+            self.album_list.setItem(row, 2, QtWidgets.QTableWidgetItem(str(album.year)))
             row += 1
         self.album_list.resizeColumnsToContents()
+
+    def add_artists_to_display(self, artists_to_add):
+        self.artist_list.setItem(0, 0, QtWidgets.QTableWidgetItem('Artist'))
+        row = 1
+        for artist in artists_to_add:
+            self.add_table_row(self.artist_list)
+            self.artist_list.setItem(row, 0, QtWidgets.QTableWidgetItem(artist.name))
+            row += 1
+        self.artist_list.resizeColumnsToContents()
 
     
     def switch_list_view(self):
@@ -67,13 +79,14 @@ class PlayerWindow(Ui_MainWindow):
 my_library = MusicLibrary()
 
 #########################################################
-''' Actually display stuff '''
+#Actually display stuff
 #########################################################
 
 app = QtWidgets.QApplication(sys.argv)
 ui = PlayerWindow()
 ui.add_songs_to_display(my_library.songs)
 ui.add_albums_to_display(my_library.albums)
+ui.add_artists_to_display(my_library.artists)
 ui.MainWindow.show()
 sys.exit(app.exec_())
 
