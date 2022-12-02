@@ -85,7 +85,7 @@ class MusicLibrary:
 
     def sort_object_list(self, list_to_sort, sort_attribute):
         '''
-        Sorts the specifed list of objects by the specified object attribute
+        Sorts the specifed list of objects by the specified object attribute using insertion sort
 
         Inputs:
             - (list) list of objects to sort => list_to_sort

@@ -24,44 +24,18 @@ class PlayerWindow(Ui_MainWindow):
         row_count = table.rowCount()
         table.insertRow(row_count)
 
-    def add_songs_to_display(self, songs_to_add):
-        self.song_list.setItem(0, 0, QtWidgets.QTableWidgetItem('Title'))
-        self.song_list.setItem(0, 1, QtWidgets.QTableWidgetItem('Artist'))
-        self.song_list.setItem(0, 2, QtWidgets.QTableWidgetItem('Album'))
-        self.song_list.setItem(0, 3, QtWidgets.QTableWidgetItem('Duration'))
+    def add_table_items(self, items_to_add, table, table_headings, attributes_to_add):
+        column_count = table.columnCount()
+        for column in range(0, column_count):
+            table.setItem(0, column, QtWidgets.QTableWidgetItem(table_headings[column]))
         row = 1
-        for song in songs_to_add:
-            self.add_table_row(self.song_list)
-            self.song_list.setItem(row, 0, QtWidgets.QTableWidgetItem(song.title))
-            self.song_list.setItem(row, 1, QtWidgets.QTableWidgetItem(song.artist))
-            self.song_list.setItem(row, 2, QtWidgets.QTableWidgetItem(song.album))
-            self.song_list.setItem(row, 3, QtWidgets.QTableWidgetItem(str(song.duration_formatted)))
+        for item in items_to_add:
+            self.add_table_row(table)
+            for column in range(0, column_count):
+                table.setItem(row, column, QtWidgets.QTableWidgetItem(getattr(item, attributes_to_add[column])))
             row += 1
-        self.song_list.resizeColumnsToContents()
-    
-    def add_albums_to_display(self, albums_to_add):
-        self.album_list.setItem(0, 0, QtWidgets.QTableWidgetItem('Album'))
-        self.album_list.setItem(0, 1, QtWidgets.QTableWidgetItem('Artist'))
-        self.album_list.setItem(0, 2, QtWidgets.QTableWidgetItem('Year'))
-        row = 1
-        for album in albums_to_add:
-            self.add_table_row(self.album_list)
-            self.album_list.setItem(row, 0, QtWidgets.QTableWidgetItem(album.name))
-            self.album_list.setItem(row, 1, QtWidgets.QTableWidgetItem(album.artist))
-            self.album_list.setItem(row, 2, QtWidgets.QTableWidgetItem(str(album.year)))
-            row += 1
-        self.album_list.resizeColumnsToContents()
+        table.resizeColumnsToContents()
 
-    def add_artists_to_display(self, artists_to_add):
-        self.artist_list.setItem(0, 0, QtWidgets.QTableWidgetItem('Artist'))
-        row = 1
-        for artist in artists_to_add:
-            self.add_table_row(self.artist_list)
-            self.artist_list.setItem(row, 0, QtWidgets.QTableWidgetItem(artist.name))
-            row += 1
-        self.artist_list.resizeColumnsToContents()
-
-    
     def switch_list_view(self):
         index = self.library_list_view_dropdown.currentIndex()
         if  index == self.artist_dropdown_index:
@@ -84,9 +58,9 @@ my_library = MusicLibrary()
 
 app = QtWidgets.QApplication(sys.argv)
 ui = PlayerWindow()
-ui.add_songs_to_display(my_library.songs)
-ui.add_albums_to_display(my_library.albums)
-ui.add_artists_to_display(my_library.artists)
+ui.add_table_items(my_library.songs, ui.song_list, ['Title', 'Artist', 'Album', 'Duration'], ['title', 'artist', 'album', 'duration_formatted'])
+ui.add_table_items(my_library.albums, ui.album_list, ['Album', 'Artist', 'Year'], ['name', 'artist', 'year'])
+ui.add_table_items(my_library.artists, ui.artist_list, ['Artist'], ['name'])
 ui.MainWindow.show()
 sys.exit(app.exec_())
 

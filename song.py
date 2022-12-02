@@ -11,7 +11,7 @@ class Song:
         self.song_duration = self.audio_file.info.time_secs
         self.song_duration_formatted = self.convert_duration_to_display_format()
         self.song_album = self.audio_file.tag.album
-        self.song_year = self.audio_file.tag.getBestDate()
+        self.song_year = str(self.audio_file.tag.getBestDate())
         self.song_genre = self.audio_file.tag.genre
         # self.song_track_number = self.audio_file.tag.track
 
