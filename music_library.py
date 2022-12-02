@@ -1,7 +1,7 @@
 from artist import *
 from playlist import *
-from queue import *
 from song import *
+from album import *
 import os
 import eyed3
 
@@ -9,8 +9,8 @@ class MusicLibrary:
     def __init__(self):
         self.hidden_artists = []
         self.hidden_names = []
-        self.hidden_queue = Queue()
         self.list_of_songs = []
+        self.list_of_albums = []
         self.find_songs()
 
     def find_songs(self, location = None):
@@ -28,11 +28,40 @@ class MusicLibrary:
             pass
 
     def add_song(self, file_location):
-        new_song = Song(file_location, song_title = '', song_artist = '', song_duration = '', song_album = '', song_year = '', song_genre = '')
+        '''
+        Adds the song at the specified file location to the list of songs in the library. Also adds the album and
+        artist of the song if they do not yet exist in the library
+        '''
+        new_song = Song(file_location)
+        is_add_album = True
+        for album in self.list_of_albums:
+            if new_song.album == album.album_name:
+                is_add_album = False
+                break
+            else:
+                pass
+        if is_add_album:
+            self.add_album(new_song)
         self.list_of_songs.append(new_song)
+    
+    def add_album(self, song_with_album_info):
+        '''
+        Adds the album of the specified song to the list of albums in the library
+        '''
+        new_album = Album(song_with_album_info.album, song_with_album_info.artist, song_with_album_info.year, song_with_album_info.genre)
+        self.list_of_albums.append(new_album)
 
-    def return_songs(self):
+
+    def add_artist(self, file_location):
+        '''
+        Adds the specified artist
+        '''
+
+    def get_songs(self):
         return self.list_of_songs
+    
+    def get_albums(self):
+        return self.list_of_albums
 
     def create_playlist(self, playlist_name):
         '''
@@ -50,11 +79,8 @@ class MusicLibrary:
         '''
         Gets all of the playlists in the library
         '''
-    def add_artist(self, artist_to_add):
-        '''
-        Adds the specified artist
-        '''
     
     artists = property(fget = get_artists, doc = 'Artists in the library')
+    albums = property(fget = get_albums, doc = 'Albums in the library')
     playlists = property(fget = get_playlists, doc = 'Playlists in the library')
-    songs = property(fget = return_songs, doc = 'Songs in the libaray')
+    songs = property(fget = get_songs, doc = 'Songs in the libaray')

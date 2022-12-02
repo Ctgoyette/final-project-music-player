@@ -1,14 +1,14 @@
 import song
 
 class Album:
-    def __init__(self, album_songs = [], album_name = '', album_artist = '', album_duration = '', album_year = '', album_genre = ''):
-        self.album_songs = album_songs
+    def __init__(self, album_name = '', album_artist = '', album_year = '', album_genre = ''):
+        self.album_songs = []
         self.album_name = album_name
         self.album_artist = album_artist
-        self.album_duration = album_duration
+        # self.album_duration = album_duration
         self.album_year = album_year
         self.album_genre = album_genre
-        self.album_song_count = len(album_songs)
+        self.album_song_count = len(self.album_songs)
 
     def play_album(self):
         '''
