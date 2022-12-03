@@ -14,6 +14,7 @@ class Song:
         self.song_year = str(self.audio_file.tag.getBestDate())
         self.song_genre = self.audio_file.tag.genre
         self.song_images = self.audio_file.tag.images
+        self.track_num = self.audio_file.tag.track_num[0]
 
     def convert_duration_to_display_format(self):
         minutes = int(self.song_duration) // 60

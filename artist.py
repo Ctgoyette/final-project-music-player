@@ -21,10 +21,15 @@ class Artist:
         '''
         Gets the name of the albums belonging to the artist
         '''
+        return self.artist_albums
+
     def add_album(self, album_to_add):
         '''
         Adds the specifed album to the artist's catalogue
         '''
+        self.artist_albums.append(album_to_add)
+        self.artist_album_count = len(self.artist_albums)
+
     def remove_album(self, album_to_remove):
         '''
         Removes the specified album from the artist's catalogue

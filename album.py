@@ -59,12 +59,13 @@ class Album:
         Gets the number of songs in an album
         '''
         return self.album_song_count
-        
+
     def add_song(self, song_to_add):
         '''
         Adds a song to an album
         '''
         self.album_songs.append(song_to_add)
+        self.album_song_count = len(self.album_songs)
 
     def remove_song(self, song_to_remove):
         '''

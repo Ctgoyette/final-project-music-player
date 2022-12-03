@@ -16,6 +16,7 @@ class MusicLibrary:
         self.find_songs()
         self.sort_object_list(self.list_of_artists, 'name')
         self.sort_object_list(self.list_of_albums, 'name')
+        self.sort_all_albums()
 
     def find_songs(self, location = None):
         if location is None:
@@ -38,7 +39,6 @@ class MusicLibrary:
         '''
         new_song = Song(file_location)
         is_add_album = True
-        is_add_artist = True
         for album in self.list_of_albums:
             if new_song.album == album.name:
                 is_add_album = False
@@ -46,16 +46,8 @@ class MusicLibrary:
                 break
             else:
                 pass
-        for artist in self.list_of_artists:
-            if new_song.artist == artist.name:
-                is_add_artist = False
-                break
-            else:
-                pass
         if is_add_album:
             self.add_album(new_song)
-        if is_add_artist:
-            self.add_artist(new_song)
         self.list_of_songs.append(new_song)
         self.num_songs = len(self.list_of_songs)
     
@@ -64,17 +56,28 @@ class MusicLibrary:
         Adds the album of the specified song to the list of albums in the library
         '''
         new_album = Album(song_with_album_info.album, song_with_album_info.artist, song_with_album_info.year, song_with_album_info.genre)
+        is_add_artist = True
+        for artist in self.list_of_artists:
+            if new_album.artist == artist.name:
+                is_add_artist = False
+                artist.add_album(new_album)
+                break
+            else:
+                pass
+        if is_add_artist:
+            self.add_artist(new_album)
         self.list_of_albums.append(new_album)
         self.num_albums = len(self.list_of_albums)
         new_album.add_song(song_with_album_info)
 
-    def add_artist(self, song_with_artist_info):
+    def add_artist(self, album_with_artist_info):
         '''
         Adds the specified artist
         '''
-        new_artist = Artist(song_with_artist_info.artist)
+        new_artist = Artist(album_with_artist_info.artist)
         self.list_of_artists.append(new_artist)
         self.num_artists = len(self.list_of_artists)
+        new_artist.add_album(album_with_artist_info)
 
     def get_songs(self):
         return self.list_of_songs
@@ -102,6 +105,10 @@ class MusicLibrary:
                     list_to_sort[last_index + 1] = list_to_sort[last_index]
                     last_index -= 1
                 list_to_sort[last_index + 1] = object_key
+    
+    def sort_all_albums(self):
+        for album in self.list_of_albums:
+            self.sort_object_list(album.songs, 'track_num')
 
     def create_playlist(self, playlist_name):
         '''
