@@ -58,10 +58,14 @@ class Album:
         '''
         Gets the number of songs in an album
         '''
+        return self.album_song_count
+        
     def add_song(self, song_to_add):
         '''
         Adds a song to an album
         '''
+        self.album_songs.append(song_to_add)
+
     def remove_song(self, song_to_remove):
         '''
         Removes a song from an album
@@ -70,6 +74,7 @@ class Album:
         '''
         Gets the songs in an album
         '''
+        return self.album_songs
     
     name = property(fget = get_name, fset = set_name, doc = 'Name of album')
     artist = property(fget = get_artist, fset = set_artist, doc = 'Album artist')

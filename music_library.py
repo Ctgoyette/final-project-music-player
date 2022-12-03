@@ -42,6 +42,7 @@ class MusicLibrary:
         for album in self.list_of_albums:
             if new_song.album == album.name:
                 is_add_album = False
+                album.add_song(new_song)
                 break
             else:
                 pass
@@ -65,6 +66,7 @@ class MusicLibrary:
         new_album = Album(song_with_album_info.album, song_with_album_info.artist, song_with_album_info.year, song_with_album_info.genre)
         self.list_of_albums.append(new_album)
         self.num_albums = len(self.list_of_albums)
+        new_album.add_song(song_with_album_info)
 
     def add_artist(self, song_with_artist_info):
         '''
