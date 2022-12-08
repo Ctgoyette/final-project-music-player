@@ -145,4 +145,4 @@ class MusicLibrary:
     artists = property(fget = get_artists, doc = 'Artists in the libryar')
     albums = property(fget = get_albums, doc = 'Albums in the library')
     playlists = property(fget = get_playlists, doc = 'Playlists in the library')
-    songs = property(fget = get_songs, doc = 'Songs in the libaray')
+    songs = property(fget = get_songs, doc = 'Songs in the library')

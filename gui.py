@@ -1,3 +1,4 @@
+from functools import partial
 from PyQt5 import QtCore, QtGui, QtWidgets
 from base_gui import Ui_MainWindow
 from music_library import MusicLibrary, Song
@@ -13,24 +14,32 @@ class PlayerWindow(Ui_MainWindow):
         self.library_dropdown_album_index = self.library_view_dropdown.findText('Albums')
         self.library_dropdown_song_index = self.library_view_dropdown.findText('Tracks')
         self.library_view_dropdown.currentIndexChanged.connect(self.switch_library_view)
-        self.album_list.itemDoubleClicked.connect(lambda: self.album_double_clicked(self.album_list, self.music_library.albums))
+        self.album_list.itemDoubleClicked.connect(partial(self.album_double_clicked, self.album_list, self.music_library.albums))
         self.artist_list.itemDoubleClicked.connect(self.artist_double_clicked)
         self.switch_library_view()
-        self.button_library_view.clicked.connect(lambda: self.switch_content_view('Library'))
-        self.button_playlist_view.clicked.connect(lambda: self.switch_content_view('Playlists'))
+        self.button_library_view.clicked.connect(partial(self.switch_content_view, 'Library'))
+        self.button_playlist_view.clicked.connect(partial(self.switch_content_view, 'Playlists'))
         self.last_content_page_index_album = 0
         self.last_content_page_index_artist = 0
-        self.album_page_back_button.clicked.connect(lambda: self.switch_content_view('Album_Previous'))
-        self.artist_page_back_button.clicked.connect(lambda: self.switch_content_view('Artist_Previous'))
+        self.album_page_back_button.clicked.connect(partial(self.switch_content_view, 'Album_Previous'))
+        self.artist_page_back_button.clicked.connect(partial(self.switch_content_view, 'Artist_Previous'))
         self.selected_artist = None
         self.selected_album = None
         self.artist_page_album_list.itemDoubleClicked.connect(lambda: self.album_double_clicked(self.artist_page_album_list, self.selected_artist.albums))
         self.switch_content_view('Library')
-        self.album_cover_display.setPixmap(QtGui.QPixmap(r'images\album-cover-placeholder.jpg').scaled(300, 300, QtCore.Qt.KeepAspectRatio))
+        self.album_cover_display.setPixmap(QtGui.QPixmap(r'images\album-cover-placeholder.jpg').scaled(300, 300, QtCore.Qt.KeepAspectRatioByExpanding))
         self.add_table_items(self.music_library.songs, self.song_list, ['Title', 'Artist', 'Album', 'Duration'], ['title', 'artist', 'album', 'duration_formatted'])
         self.add_table_items(self.music_library.albums, self.album_list, ['Album', 'Artist', 'Year'], ['name', 'artist', 'year'])
         self.add_table_items(self.music_library.artists, self.artist_list, ['Artist'], ['name'])
-        self.list_of_tables = [self.song_list, self.artist_list, self.album_list, self.playlist_list, self.album_page_song_list, self.artist_page_album_list]
+        # self.list_of_tables = [self.song_list, self.artist_list, self.album_list, self.playlist_list, self.album_page_song_list, self.artist_page_album_list]
+        self.tables = {
+            'song_list': self.song_list,
+            'artist_list': self.artist_list,
+            'album_list': self.album_list,
+            'playlist_list': self.playlist_list,
+            'album_page_song_list': self.album_page_song_list,
+            'artist_page_album_list': self.artist_page_album_list
+        }
         self.setup_table_resizing()
         self.settings_button_setup()
         self.add_location_button_setup()
@@ -49,7 +58,7 @@ class PlayerWindow(Ui_MainWindow):
         self.button_add_location.clicked.connect(self.add_library_location)
 
     def setup_table_resizing(self):
-        for table in self.list_of_tables:
+        for table_name, table in self.tables.items():
             table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
 
     def add_table_row(self, table):
