@@ -68,7 +68,7 @@ class PlayerWindow(Ui_MainWindow):
     def playing_media_frame_setup(self):
         play_icon = QtGui.QIcon(r'images\play_button.png')
         self.play_button.setIcon(play_icon)
-        self.play_button.setIconSize(QtCore.QSize(40, 40))
+        self.play_button.setIconSize(QtCore.QSize(50, 50))
         self.play_button.setStyleSheet("QPushButton {background-color : rgb(240, 240, 240); border : none;}")
         self.play_button.clicked.connect(self.play_pause)
         self.button_next_song.clicked.connect(self.play_next)

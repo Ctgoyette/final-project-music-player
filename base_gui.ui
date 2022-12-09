@@ -1189,8 +1189,8 @@
               <widget class="QToolButton" name="button_previous_song">
                <property name="minimumSize">
                 <size>
-                 <width>25</width>
-                 <height>25</height>
+                 <width>30</width>
+                 <height>30</height>
                 </size>
                </property>
                <property name="text">
@@ -1211,14 +1211,14 @@
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>40</width>
-                 <height>40</height>
+                 <width>50</width>
+                 <height>50</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>40</width>
-                 <height>40</height>
+                 <width>50</width>
+                 <height>50</height>
                 </size>
                </property>
                <property name="cursor">
@@ -1233,8 +1233,8 @@
               <widget class="QToolButton" name="button_next_song">
                <property name="minimumSize">
                 <size>
-                 <width>25</width>
-                 <height>25</height>
+                 <width>30</width>
+                 <height>30</height>
                 </size>
                </property>
                <property name="text">
