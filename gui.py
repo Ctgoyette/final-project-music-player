@@ -9,6 +9,7 @@ import qdarktheme
 
 class PlayerWindow(Ui_MainWindow):
     def __init__(self):
+        self.app = QtWidgets.QApplication(sys.argv)
         self.MainWindow = QtWidgets.QMainWindow()
         self.setupUi(self.MainWindow)
         self.music_library = MusicLibrary()
@@ -32,13 +33,13 @@ class PlayerWindow(Ui_MainWindow):
         self.artist_page_album_list.itemDoubleClicked.connect(lambda: self.album_double_clicked(self.artist_page_album_list, self.selected_artist.albums))
         self.album_page_song_list.itemDoubleClicked.connect(lambda: self.song_double_clicked(self.album_page_song_list, self.selected_album.songs))
         self.switch_content_view('Library')
-        self.music_library.add_library_file_location()
         self.album_cover_display.setPixmap(QtGui.QPixmap(r'images\album-cover-placeholder.jpg').scaled(300, 300, QtCore.Qt.KeepAspectRatioByExpanding))
+        self.initial_file_location()
         self.display_tables_setup()
         self.settings_button_setup()
         self.add_location_button_setup()
         self.player = QMediaPlayer()
-        self.media_buttons_setup()
+        self.playing_media_frame_setup()
 
     def settings_button_setup(self):
         settings_icon = QtGui.QIcon(r'images\settings_icon.png')
@@ -64,10 +65,10 @@ class PlayerWindow(Ui_MainWindow):
     def add_location_button_setup(self):
         self.button_add_location.clicked.connect(self.add_library_location)
 
-    def media_buttons_setup(self):
+    def playing_media_frame_setup(self):
         play_icon = QtGui.QIcon(r'images\play_button.png')
         self.play_button.setIcon(play_icon)
-        self.play_button.setIconSize(QtCore.QSize(50, 50))
+        self.play_button.setIconSize(QtCore.QSize(40, 40))
         self.play_button.setStyleSheet("QPushButton {background-color : rgb(240, 240, 240); border : none;}")
         self.play_button.clicked.connect(self.play_pause)
         self.button_next_song.clicked.connect(self.play_next)
@@ -78,7 +79,20 @@ class PlayerWindow(Ui_MainWindow):
         self.player.durationChanged.connect(self.update_seekbar_range)
         self.seek_bar.sliderMoved.connect(self.seek_through_song)
         self.frame_playing_media.hide()
+        self.player.metaDataChanged.connect(self.meta_data_changed)
 
+    def initial_file_location(self):
+        if sys.platform == "linux" or sys.platform == "linux2":
+            pass
+        elif sys.platform == "darwin":
+            pass
+        elif sys.platform == "win32":
+            music_folder = os.path.expanduser("~\Music")
+        else:
+            pass
+        self.music_library.add_library_file_location(music_folder)
+        self.file_locations_list.addItem(music_folder)
+            
     def setup_table_resizing(self):
         for table_name, table in self.tables.items():
             table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
@@ -219,7 +233,16 @@ class PlayerWindow(Ui_MainWindow):
         sender = self.seek_bar.sender()
         if isinstance(sender, QtWidgets.QSlider):
             self.player.setPosition(position)
-        
+    
+    def meta_data_changed(self):
+        song_title = self.player.metaData(QMediaMetaData.Title)
+        if self.player.metaData(QMediaMetaData.ContributingArtist):
+            album_artist = self.player.metaData(QMediaMetaData.ContributingArtist)[0]
+        else:
+            album_artist = self.player.metaData(QMediaMetaData.AlbumArtist)
+        self.playing_song.setText(song_title)
+        self.playing_song.adjustSize()
+        self.playing_artist.setText(album_artist)
 
         
 
@@ -228,8 +251,7 @@ class PlayerWindow(Ui_MainWindow):
 #Actually display stuff
 #########################################################
 
-app = QtWidgets.QApplication(sys.argv)
 ui = PlayerWindow()
 # app.setStyleSheet(qdarktheme.load_stylesheet())
 ui.MainWindow.show()
-sys.exit(app.exec_())
+sys.exit(ui.app.exec_())

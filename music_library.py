@@ -4,7 +4,6 @@ from song import *
 from album import *
 import os
 import eyed3
-from sys import platform
 
 class MusicLibrary:
     def __init__(self):
@@ -17,34 +16,15 @@ class MusicLibrary:
         self.library_file_locations = []
 
 
-    def find_songs(self, location = None):
-        if location is None:
-            if platform == "linux" or platform == "linux2":
-                pass
-
-            elif platform == "darwin":
-                pass
-
-            elif platform == "win32":
-                music_folder = os.path.expanduser("~\Music")
-                for root, dirs, files in os.walk(music_folder):
-                    # select file name
-                    for file in files:
-                        # check the extension of files
-                        if file.endswith('.mp3'):
-                            # print whole path of files
-                            file_path = (os.path.join(root, file))
-                            self.add_song(file_path)
-                        
-        else:
-            for root, dirs, files in os.walk(location):
-                # select file name
-                for file in files:
-                    # check the extension of files
-                    if file.endswith('.mp3'):
-                        # print whole path of files
-                        file_path = (os.path.join(root, file))
-                        self.add_song(file_path)
+    def find_songs(self, location):
+        for root, dirs, files in os.walk(location):
+            # select file name
+            for file in files:
+                # check the extension of files
+                if file.endswith('.mp3'):
+                    # print whole path of files
+                    file_path = (os.path.join(root, file))
+                    self.add_song(file_path)
 
     def add_song(self, file_location):
         '''
