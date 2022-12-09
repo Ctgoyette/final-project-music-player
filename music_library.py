@@ -4,6 +4,7 @@ from song import *
 from album import *
 import os
 import eyed3
+from sys import platform
 
 class MusicLibrary:
     def __init__(self):
@@ -18,15 +19,22 @@ class MusicLibrary:
 
     def find_songs(self, location = None):
         if location is None:
-            # for root, dirs, files in os.walk(r'C:\Users\Casey\Music'):
-            #     # select file name
-            #     for file in files:
-            #         # check the extension of files
-            #         if file.endswith('.mp3'):
-            #             # print whole path of files
-            #             file_path = (os.path.join(root, file))
-            #             self.add_song(file_path)
-            pass
+            if platform == "linux" or platform == "linux2":
+                pass
+
+            elif platform == "darwin":
+                pass
+
+            elif platform == "win32":
+                music_folder = os.path.expanduser("~\Music")
+                for root, dirs, files in os.walk(music_folder):
+                    # select file name
+                    for file in files:
+                        # check the extension of files
+                        if file.endswith('.mp3'):
+                            # print whole path of files
+                            file_path = (os.path.join(root, file))
+                            self.add_song(file_path)
                         
         else:
             for root, dirs, files in os.walk(location):
@@ -122,12 +130,20 @@ class MusicLibrary:
     def sort_all_artists(self):
         self.sort_object_list(self.list_of_artists, 'name')
     
-    def add_library_file_location(self, location):
+    def sort_all_songs(self):
+        self.sort_all_album_tracks()
+        self.list_of_songs.clear()
+        for album in self.list_of_albums:
+            for song in album.songs:
+                self.list_of_songs.append(song)
+    
+    def add_library_file_location(self, location = None):
         self.library_file_locations.append(location)
         self.find_songs(location)
         self.sort_all_album_tracks()
         self.sort_all_albums()
         self.sort_all_artists()
+        self.sort_all_songs()
 
     def create_playlist(self, playlist_name):
         '''

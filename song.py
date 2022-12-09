@@ -15,11 +15,12 @@ class Song:
         self.song_genre = self.audio_file.tag.genre
         self.song_images = self.audio_file.tag.images
         self.track_num = self.audio_file.tag.track_num[0]
+        self.song_file = file
 
     def convert_duration_to_display_format(self):
-        minutes = int(self.song_duration) // 60
-        seconds = int(self.song_duration) % 60
-        formatted_duration = '{0}:{0:0>2}'.format(minutes, seconds)
+        minutes = int(self.song_duration // 60)
+        seconds = int(self.song_duration % 60)
+        formatted_duration = f'{minutes:02}:{seconds:02}'
         return formatted_duration
 
     def play(self):
