@@ -74,9 +74,10 @@ class PlayerWindow(Ui_MainWindow):
         self.button_next_song.setStyleSheet("QToolButton {background-color : rgb(240, 240, 240); border : none;} QToolButton:hover {color : white;}")
         self.button_previous_song.clicked.connect(self.play_last)
         self.button_previous_song.setStyleSheet("QToolButton {background-color : rgb(240, 240, 240); border : none;} QToolButton:hover {color : white;}")
-        self.play_button.hide()
-        self.button_next_song.hide()
-        self.button_previous_song.hide()
+        self.player.positionChanged.connect(self.update_seekbar)
+        self.player.durationChanged.connect(self.update_seekbar_range)
+        self.seek_bar.sliderMoved.connect(self.seek_through_song)
+        self.frame_playing_media.hide()
 
     def setup_table_resizing(self):
         for table_name, table in self.tables.items():
@@ -170,9 +171,7 @@ class PlayerWindow(Ui_MainWindow):
                 self.current_playing_list.addMedia(QMediaContent(QtCore.QUrl.fromLocalFile(song.song_file)))
             self.player.setPlaylist(self.current_playing_list)
             if row_index != 0:
-                self.play_button.show()
-                self.button_next_song.show()
-                self.button_previous_song.show()
+                self.frame_playing_media.show()
                 self.current_playing_list.setCurrentIndex(row_index - 1)
                 self.play_pause()
             else:
@@ -206,6 +205,22 @@ class PlayerWindow(Ui_MainWindow):
     
     def play_last(self):
         self.current_playing_list.previous()
+
+    def update_seekbar(self, position, senderType = False):
+        if senderType == False:
+            self.seek_bar.setValue(position)
+            self.seek_bar_position.setText(f'{int(position/60000):02}:{int(position/1000%60):02}')
+        
+    def update_seekbar_range(self, duration):
+        self.seek_bar.setMaximum(duration)
+        self.seek_bar_duration.setText(f'{int(duration/60000):02}:{int(duration/1000%60):02}')
+
+    def seek_through_song(self, position):
+        sender = self.seek_bar.sender()
+        if isinstance(sender, QtWidgets.QSlider):
+            self.player.setPosition(position)
+        
+
         
 
 
@@ -218,4 +233,3 @@ ui = PlayerWindow()
 # app.setStyleSheet(qdarktheme.load_stylesheet())
 ui.MainWindow.show()
 sys.exit(app.exec_())
-
