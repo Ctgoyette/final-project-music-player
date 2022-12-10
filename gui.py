@@ -2,7 +2,7 @@ from functools import partial
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtMultimedia import *
 from base_gui import Ui_MainWindow
-from music_library import MusicLibrary, Song
+from music_library import MusicLibrary
 import sys
 import os
 import qdarktheme
@@ -10,8 +10,7 @@ import qdarktheme
 class PlayerWindow(Ui_MainWindow):
     def __init__(self):
         self.app = QtWidgets.QApplication(sys.argv)
-        self.MainWindow = QtWidgets.QMainWindow()
-        self.setupUi(self.MainWindow)
+        self.main_window_setup()
         self.music_library = MusicLibrary()
         self.library_dropdown_artist_index = self.library_view_dropdown.findText('Artists')
         self.library_dropdown_album_index = self.library_view_dropdown.findText('Albums')
@@ -34,12 +33,20 @@ class PlayerWindow(Ui_MainWindow):
         self.album_page_song_list.itemDoubleClicked.connect(lambda: self.song_double_clicked(self.album_page_song_list, self.selected_album.songs))
         self.switch_content_view('Library')
         self.album_cover_display.setPixmap(QtGui.QPixmap(r'images\album-cover-placeholder.jpg').scaled(300, 300, QtCore.Qt.KeepAspectRatioByExpanding))
-        self.initial_file_location()
-        self.display_tables_setup()
         self.settings_button_setup()
         self.add_location_button_setup()
         self.player = QMediaPlayer()
         self.playing_media_frame_setup()
+        self.create_playlist('Test Playlist')
+
+    def initial_table_setup(self):
+        self.initial_file_location()
+        self.display_tables_setup()
+
+    def main_window_setup(self):
+        self.MainWindow = QtWidgets.QMainWindow()
+        self.setupUi(self.MainWindow)
+        self.verticalLayout_6.setContentsMargins(0,11,0,0)
 
     def settings_button_setup(self):
         settings_icon = QtGui.QIcon(r'images\settings_icon.png')
@@ -61,6 +68,8 @@ class PlayerWindow(Ui_MainWindow):
             'artist_page_album_list': self.artist_page_album_list
         }
         self.setup_table_resizing()
+        self.song_list.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.song_list.customContextMenuRequested.connect(partial(self.song_context_menu, self.song_list, self.music_library.songs))
 
     def add_location_button_setup(self):
         self.button_add_location.clicked.connect(self.add_library_location)
@@ -80,6 +89,7 @@ class PlayerWindow(Ui_MainWindow):
         self.seek_bar.sliderMoved.connect(self.seek_through_song)
         self.frame_playing_media.hide()
         self.player.metaDataChanged.connect(self.meta_data_changed)
+        self.frame_playing_media.setStyleSheet('background-color : grey;')
 
     def initial_file_location(self):
         if sys.platform == "linux" or sys.platform == "linux2":
@@ -243,6 +253,30 @@ class PlayerWindow(Ui_MainWindow):
         self.playing_song.setText(song_title)
         self.playing_song.adjustSize()
         self.playing_artist.setText(album_artist)
+    
+    def create_playlist(self, playlist_name):
+        self.music_library.create_playlist(playlist_name)
+        self.add_table_items(self.music_library.playlists.values(), self.playlist_list, ['Playlist'], ['name'])
+        for value in self.music_library.playlists.values():
+            print(value.name)
+
+    def song_context_menu(self, selected_table, associated_library_list):
+        row_index = selected_table.currentRow()
+        column_index = selected_table.currentColumn()
+        if row_index != 0:
+            if column_index == 0:
+                song_context_menu = QtWidgets.QMenu(selected_table)
+                sub_menu = QtWidgets.QMenu('Add to Playlist', song_context_menu)
+                print(self.music_library.playlists)
+                for key in self.music_library.playlists.keys():
+                    sub_menu.addAction(key)
+                song_context_menu.addMenu(sub_menu)
+                song_context_menu.exec_(QtGui.QCursor.pos())
+
+            else:
+                pass
+        else:
+            pass
 
         
 
@@ -252,6 +286,6 @@ class PlayerWindow(Ui_MainWindow):
 #########################################################
 
 ui = PlayerWindow()
-# app.setStyleSheet(qdarktheme.load_stylesheet())
-ui.MainWindow.show()
+ui.MainWindow.showMaximized()
+ui.initial_table_setup()
 sys.exit(ui.app.exec_())

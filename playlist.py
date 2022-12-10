@@ -1,10 +1,35 @@
+import sys
+import os
+
 class Playlist:
-    def __init__(self, playlist_name, playlist_songs = [], playlist_duration = ''):
+    def __init__(self, playlist_name, playlist_file_location = None):
         self.playlist_name = playlist_name
-        self.playlist_songs = playlist_songs
-        self.playlist_duration = playlist_duration
-        self.song_count = len(playlist_songs)
+        self.playlist_songs = []
+        self.playlist_duration = 0
+        self.playlist_file_location = playlist_file_location
+        self.num_songs = len(self.playlist_songs)
+        self.create_playlist()
     
+    def create_playlist(self):
+        if sys.platform == "linux" or sys.platform == "linux2":
+            default_folder = os.getcwd()
+        elif sys.platform == "darwin":
+            default_folder = os.getcwd()
+        elif sys.platform == "win32":
+            default_folder = os.path.expanduser("~\Music")
+        else:
+            pass
+        path_to_playlist = os.path.join(default_folder, 'Playlists')
+        if not os.path.exists(path_to_playlist):
+            os.makedirs(path_to_playlist)
+        playlist_file_name = self.playlist_name + '.m3u'
+        playlist_file_location = os.path.join(path_to_playlist, playlist_file_name)
+        playlist_file = open(playlist_file_location, 'w')
+        playlist_file.write('#EXTM3U')
+        playlist_file.close()
+        self.playlist_file_location = playlist_file_location
+        
+
     def play(self):
         '''
         Plays all the songs in the playlist beginning with the first song
@@ -25,6 +50,8 @@ class Playlist:
         '''
         Gets the name of the playlist
         '''
+        return self.playlist_name
+        
     def set_name(self):
         '''
         Sets the name of the playlist

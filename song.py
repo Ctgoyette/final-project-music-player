@@ -23,14 +23,6 @@ class Song:
         formatted_duration = f'{minutes:02}:{seconds:02}'
         return formatted_duration
 
-    def play(self):
-        '''
-        Plays the song
-        '''
-    def pause(self):
-        '''
-        Pauses the song
-        '''
     def get_title(self):
         '''
         Gets the title of the song 
@@ -41,6 +33,8 @@ class Song:
         '''
         Sets the title of the song to the specified title
         '''
+        self.song_title = title_to_set
+
     def get_artist(self):
         '''
         Gets the name of the artist of the song 
@@ -51,6 +45,8 @@ class Song:
         '''
         Sets the name of the artist of the song to the specified artist name
         '''
+        self.song_artist = artist_to_set
+
     def get_duration(self):
         '''
         Gets the duration of the song 
@@ -61,7 +57,8 @@ class Song:
         '''
         Sets the duration of the song to the specified duration
         '''
-    
+        self.song_duration = duration_to_set
+
     def get_duration_formatted(self):
         '''
         Gets the duration of the song 
@@ -78,6 +75,8 @@ class Song:
         '''
         Sets the name of the album that the song belongs to the specifed album
         '''
+        self.song_album = album_to_set
+
     def get_year(self):
         '''
         Gets the release year of the song 
@@ -88,6 +87,8 @@ class Song:
         '''
         Sets the release year of the song to the specified year
         '''
+        self.song_year = year_to_set
+
     def get_genre(self):
         '''
         Gets the genre of the song 
@@ -98,6 +99,7 @@ class Song:
         '''
         Sets the genre of the song to the specifed genre
         '''
+        self.song_genre = genre_to_set
     
     title = property(fget = get_title, fset = set_title, doc = 'Title of song')
     duration = property(fget = get_duration, fset = set_duration, doc = 'Duration of song')

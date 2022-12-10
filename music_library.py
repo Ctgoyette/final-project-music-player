@@ -10,6 +10,7 @@ class MusicLibrary:
         self.list_of_songs = []
         self.list_of_albums = []
         self.list_of_artists = []
+        self.dict_of_playlists = dict()
         self.num_songs = len(self.list_of_songs)
         self.num_albums = len(self.list_of_albums)
         self.num_artists = len(self.list_of_artists)
@@ -129,6 +130,9 @@ class MusicLibrary:
         '''
         Creates a new playlist with the specified name
         '''
+        new_playlist = Playlist(playlist_name)
+        self.dict_of_playlists[playlist_name] = new_playlist
+
     def delete_playlist(self, playlist_to_remove):
         '''
         Deletes the specified playlist
@@ -137,6 +141,7 @@ class MusicLibrary:
         '''
         Gets all of the playlists in the library
         '''
+        return self.dict_of_playlists
     
     artists = property(fget = get_artists, doc = 'Artists in the libryar')
     albums = property(fget = get_albums, doc = 'Albums in the library')
