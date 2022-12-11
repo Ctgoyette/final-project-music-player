@@ -6,22 +6,39 @@ class Song:
         Initializes all attributes
         '''
         self.audio_file = eyed3.load(file)
-        self.song_title = self.audio_file.tag.title
-        self.song_artist = self.audio_file.tag.artist
-        self.song_duration = self.audio_file.info.time_secs
-        self.song_duration_formatted = self.convert_duration_to_display_format()
-        self.song_album = self.audio_file.tag.album
-        self.song_year = str(self.audio_file.tag.getBestDate())
-        self.song_genre = self.audio_file.tag.genre
-        self.song_images = self.audio_file.tag.images
-        self.track_num = self.audio_file.tag.track_num[0]
+        try:
+            self.song_title = self.audio_file.tag.title
+            self.song_artist = self.audio_file.tag.artist
+            self.song_duration = self.audio_file.info.time_secs
+            self.song_duration_formatted = self.convert_duration_to_display_format()
+            self.song_album = self.audio_file.tag.album
+            self.song_year = str(self.audio_file.tag.getBestDate())
+            self.song_genre = self.audio_file.tag.genre
+            self.track_num = self.audio_file.tag.track_num[0]
+        except:
+            self.song_title = 'Unknown'
+            self.song_artist = 'Unknown'
+            self.song_duration = 0
+            self.song_duration_formatted = '00:00'
+            self.song_album = 'Unknown'
+            self.song_year = 'Unknown'
+            self.song_genre = 'Unknown'
+            self.track_num = 'Unknown'
         self.song_file = file
+        # print(self.song_title)
 
     def convert_duration_to_display_format(self):
         minutes = int(self.song_duration // 60)
         seconds = int(self.song_duration % 60)
         formatted_duration = f'{minutes:02}:{seconds:02}'
         return formatted_duration
+    
+    def set_unknown(self, attribute, value):
+        try:
+            attribute = value
+        except:
+            attribute = 'Unknown'
+        return attribute
 
     def get_title(self):
         '''

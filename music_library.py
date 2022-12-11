@@ -45,19 +45,21 @@ class MusicLibrary:
         Adds the song at the specified file location to the list of songs in the library. Also adds the album and
         artist of the song if they do not yet exist in the library
         '''
+
         new_song = Song(file_location)
-        is_add_album = True
-        for album in self.list_of_albums.values():
-            if new_song.album == album.name:
-                is_add_album = False
-                album.add_song(new_song)
-                break
-            else:
-                pass
-        if is_add_album:
-            self.add_album(new_song)
-        self.list_of_songs[new_song.title] = new_song
-        self.num_songs = len(self.list_of_songs.keys())
+        if new_song.title is not None and new_song.artist is not None and new_song.album is not None:
+            is_add_album = True
+            for album in self.list_of_albums.values():
+                if new_song.album == album.name and new_song.artist == album.artist:
+                    is_add_album = False
+                    album.add_song(new_song)
+                    break
+                else:
+                    pass
+            if is_add_album:
+                self.add_album(new_song)
+            self.list_of_songs[new_song.title] = new_song
+            self.num_songs = len(self.list_of_songs.keys())
     
     def add_album(self, song_with_album_info):
         '''
@@ -65,28 +67,30 @@ class MusicLibrary:
         exist in the library. Also adds the specified song to the album's song list
         '''
         new_album = Album(song_with_album_info.album, song_with_album_info.artist, song_with_album_info.year, song_with_album_info.genre)
-        is_add_artist = True
-        for artist in self.list_of_artists.values():
-            if new_album.artist == artist.name:
-                is_add_artist = False
-                artist.add_album(new_album)
-                break
-            else:
-                pass
-        if is_add_artist:
-            self.add_artist(new_album)
-        self.list_of_albums[new_album.name] = new_album
-        self.num_albums = len(self.list_of_albums)
-        new_album.add_song(song_with_album_info)
+        if new_album.name is not None and new_album.artist is not None:
+            is_add_artist = True
+            for artist in self.list_of_artists.values():
+                if new_album.artist == artist.name:
+                    is_add_artist = False
+                    artist.add_album(new_album)
+                    break
+                else:
+                    pass
+            if is_add_artist:
+                self.add_artist(new_album)
+            self.list_of_albums[new_album.name + new_album.artist] = new_album
+            self.num_albums = len(self.list_of_albums)
+            new_album.add_song(song_with_album_info)
 
     def add_artist(self, album_with_artist_info):
         '''
         Adds the specified artist to the list of artists in the library, and adds the specified album to the artist's album list
         '''
         new_artist = Artist(album_with_artist_info.artist)
-        self.list_of_artists[new_artist.name] = new_artist
-        self.num_artists = len(self.list_of_artists)
-        new_artist.add_album(album_with_artist_info)
+        if new_artist.name is not None:
+            self.list_of_artists[new_artist.name] = new_artist
+            self.num_artists = len(self.list_of_artists)
+            new_artist.add_album(album_with_artist_info)
 
     def get_songs(self):
         return self.list_of_songs
@@ -116,14 +120,11 @@ class MusicLibrary:
                         last_index -= 1
                     list_to_sort[last_index + 1] = object_key
         else:
-            # temp_dict = dict()
-            # for key in (sorted(list_to_sort.values(), key=operator.attrgetter(sort_attribute))):
-            #     try:
-            #         temp_dict[key.title] = key
-            #     except:
-            #         temp_dict[key.name] = key
-            # list_to_sort = temp_dict
             temp_list = list(list_to_sort.values())
+            for item in temp_list:
+                if getattr(item, sort_attribute) is None:
+                    temp_list.remove(item)
+
             for current_index in range(1, len(temp_list)):
                     sort_key = getattr(temp_list[current_index], sort_attribute)
                     object_key = temp_list[current_index]
@@ -153,9 +154,10 @@ class MusicLibrary:
     def sort_all_songs(self):
         self.sort_all_album_tracks()
         self.list_of_songs.clear()
-        for album in self.list_of_albums.values():
-            for song in album.songs.values():
-                self.list_of_songs[song.title] = song
+        for artist in self.list_of_artists.values():
+            for album in artist.artist_albums.values():
+                for song in album.songs.values():
+                    self.list_of_songs[song.title] = song
     
     def add_library_file_location(self, location = None):
         self.library_file_locations.append(location)
@@ -163,6 +165,9 @@ class MusicLibrary:
         self.sort_all_albums()
         self.sort_all_artists()
         self.sort_all_songs()
+        for value in self.list_of_songs.values():
+            print(value.artist)
+        print('\n')
 
     def create_playlist(self, playlist_name, file_location = None):
         '''

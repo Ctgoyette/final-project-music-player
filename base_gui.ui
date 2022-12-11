@@ -247,7 +247,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="library_view">
        <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1031,19 +1031,6 @@
              </property>
              <property name="text">
               <string>Add Location</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="button_scan_files">
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Scan Files</string>
              </property>
             </widget>
            </item>

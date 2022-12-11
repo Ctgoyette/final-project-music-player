@@ -437,10 +437,6 @@ class Ui_MainWindow(object):
         self.button_add_location.setMinimumSize(QtCore.QSize(120, 0))
         self.button_add_location.setObjectName("button_add_location")
         self.verticalLayout_13.addWidget(self.button_add_location)
-        self.button_scan_files = QtWidgets.QPushButton(self.frame_9)
-        self.button_scan_files.setMinimumSize(QtCore.QSize(120, 0))
-        self.button_scan_files.setObjectName("button_scan_files")
-        self.verticalLayout_13.addWidget(self.button_scan_files)
         spacerItem14 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_13.addItem(spacerItem14)
         self.horizontalLayout_9.addWidget(self.frame_9)
@@ -638,7 +634,7 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
 
         self.retranslateUi(MainWindow)
-        self.content_type_view_stack.setCurrentIndex(5)
+        self.content_type_view_stack.setCurrentIndex(4)
         self.library_view_stack.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -659,7 +655,6 @@ class Ui_MainWindow(object):
         self.artist_page_artist.setText(_translate("MainWindow", "Artist"))
         self.label.setText(_translate("MainWindow", "Current Library Locations:"))
         self.button_add_location.setText(_translate("MainWindow", "Add Location"))
-        self.button_scan_files.setText(_translate("MainWindow", "Scan Files"))
         self.playlist_page_playlist.setText(_translate("MainWindow", "Playlist"))
         self.playing_song.setText(_translate("MainWindow", "Song"))
         self.playing_artist.setText(_translate("MainWindow", "Artist"))

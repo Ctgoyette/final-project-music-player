@@ -132,7 +132,11 @@ class PlayerWindow(Ui_MainWindow):
                     table.removeRow(1)
         column_count = table.columnCount()
         for column in range(0, column_count):
-            table.setItem(0, column, QtWidgets.QTableWidgetItem(table_headings[column]))
+            header = QtWidgets.QTableWidgetItem(table_headings[column])
+            font = header.font()
+            font.setBold(True)
+            header.setFont(font)
+            table.setItem(0, column, header)
         row = 1
         for item in items_to_add:
             self.add_table_row(table)
