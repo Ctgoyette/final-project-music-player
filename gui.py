@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtMultimedia import *
 from base_gui import Ui_MainWindow
 from music_library import MusicLibrary
+import eyed3
 import sys
 import os
 import qdarktheme
@@ -28,6 +29,7 @@ class PlayerWindow(Ui_MainWindow):
         self.artist_page_back_button.clicked.connect(partial(self.switch_content_view, 'Artist_Previous'))
         self.selected_artist = None
         self.selected_album = None
+        self.selected_playlist = None
         self.current_playing_list = QMediaPlaylist()
         self.artist_page_album_list.itemDoubleClicked.connect(lambda: self.album_double_clicked(self.artist_page_album_list, self.selected_artist.albums))
         self.album_page_song_list.itemDoubleClicked.connect(lambda: self.song_double_clicked(self.album_page_song_list, self.selected_album.songs))
@@ -37,7 +39,7 @@ class PlayerWindow(Ui_MainWindow):
         self.add_location_button_setup()
         self.player = QMediaPlayer()
         self.playing_media_frame_setup()
-        self.create_playlist('Test Playlist')
+        self.playlist_setup()
 
     def initial_table_setup(self):
         self.initial_file_location()
@@ -56,20 +58,23 @@ class PlayerWindow(Ui_MainWindow):
         self.settings_button.clicked.connect(partial(self.switch_content_view, 'Settings'))
     
     def display_tables_setup(self):
-        self.add_table_items(self.music_library.songs, self.song_list, ['Title', 'Artist', 'Album', 'Duration'], ['title', 'artist', 'album', 'duration_formatted'])
-        self.add_table_items(self.music_library.albums, self.album_list, ['Album', 'Artist', 'Year'], ['name', 'artist', 'year'])
-        self.add_table_items(self.music_library.artists, self.artist_list, ['Artist'], ['name'])
+        self.add_table_items(self.music_library.songs.values(), self.song_list, ['Title', 'Artist', 'Album', 'Duration'], ['title', 'artist', 'album', 'duration_formatted'])
+        self.add_table_items(self.music_library.albums.values(), self.album_list, ['Album', 'Artist', 'Year'], ['name', 'artist', 'year'])
+        self.add_table_items(self.music_library.artists.values(), self.artist_list, ['Artist'], ['name'])
         self.tables = {
             'song_list': self.song_list,
             'artist_list': self.artist_list,
             'album_list': self.album_list,
             'playlist_list': self.playlist_list,
             'album_page_song_list': self.album_page_song_list,
-            'artist_page_album_list': self.artist_page_album_list
+            'artist_page_album_list': self.artist_page_album_list,
+            'playlist_page_song_list': self.playlist_page_song_list
         }
         self.setup_table_resizing()
         self.song_list.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.song_list.customContextMenuRequested.connect(partial(self.song_context_menu, self.song_list, self.music_library.songs))
+        self.song_list.customContextMenuRequested.connect(partial(self.song_library_context_menu, self.song_list, self.music_library.songs))
+        self.album_page_song_list.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.album_page_song_list.customContextMenuRequested.connect(lambda: self.song_library_context_menu(self.album_page_song_list, self.selected_album.songs))
 
     def add_location_button_setup(self):
         self.button_add_location.clicked.connect(self.add_library_location)
@@ -90,6 +95,16 @@ class PlayerWindow(Ui_MainWindow):
         self.frame_playing_media.hide()
         self.player.metaDataChanged.connect(self.meta_data_changed)
         self.frame_playing_media.setStyleSheet('background-color : grey;')
+    
+    def playlist_setup(self):
+        self.button_create_playlist.clicked.connect(self.create_playlist)
+        self.input_playlist_name.returnPressed.connect(self.create_playlist)
+        self.playlist_list.itemDoubleClicked.connect(self.playlist_double_clicked)
+        self.playlist_page_song_list.itemDoubleClicked.connect(lambda: self.song_double_clicked(self.playlist_page_song_list, self.selected_playlist.songs))
+        self.playlist_page_song_list.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.playlist_page_song_list.customContextMenuRequested.connect(self.song_playlist_context_menu)
+        self.playlist_list.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.playlist_list.customContextMenuRequested.connect(self.playlist_list_context_menu)
 
     def initial_file_location(self):
         if sys.platform == "linux" or sys.platform == "linux2":
@@ -102,6 +117,7 @@ class PlayerWindow(Ui_MainWindow):
             pass
         self.music_library.add_library_file_location(music_folder)
         self.file_locations_list.addItem(music_folder)
+        self.add_table_items(self.music_library.playlists.values(), self.playlist_list, ['Playlist'], ['name'])
             
     def setup_table_resizing(self):
         for table_name, table in self.tables.items():
@@ -149,6 +165,8 @@ class PlayerWindow(Ui_MainWindow):
             self.content_type_view_stack.setCurrentIndex(3)
         elif selected_content_page == 'Settings':
             self.content_type_view_stack.setCurrentIndex(4)
+        elif selected_content_page == 'Playlist':
+            self.content_type_view_stack.setCurrentIndex(5)
         elif selected_content_page == 'Album_Previous':
             self.content_type_view_stack.setCurrentIndex(self.last_content_page_index_album)
         elif selected_content_page == 'Artist_Previous':
@@ -160,12 +178,13 @@ class PlayerWindow(Ui_MainWindow):
         row_index = current_display_table.currentRow()
         column_index = current_display_table.currentColumn()
         if row_index != 0:
-            self.selected_album = associated_library_list[row_index - 1]
+            selected_album = current_display_table.item(row_index, column_index).text()
+            self.selected_album = associated_library_list[selected_album]
             if column_index == 0:
                 self.album_page_album.setText(self.selected_album.name)
                 self.album_page_artist.setText(self.selected_album.artist)
                 self.album_page_year.setText(self.selected_album.year)
-                self.add_table_items(self.selected_album.songs, self.album_page_song_list, ['Title', 'Duration'], ['title', 'duration_formatted'])
+                self.add_table_items(self.selected_album.songs.values(), self.album_page_song_list, ['Title', 'Duration'], ['title', 'duration_formatted'])
                 self.switch_content_view('Album')
             elif column_index == 1:
                 pass
@@ -176,10 +195,11 @@ class PlayerWindow(Ui_MainWindow):
         row_index = self.artist_list.currentRow()
         column_index = self.artist_list.currentColumn()
         if row_index != 0:
-            self.selected_artist = self.music_library.artists[row_index - 1]
+            selected_artist = self.artist_list.item(row_index, column_index).text()
+            self.selected_artist = self.music_library.artists[selected_artist]
             if column_index == 0:
                 self.artist_page_artist.setText(self.selected_artist.name)
-                self.add_table_items(self.selected_artist.albums, self.artist_page_album_list, ['Album', 'Artist', 'Year'], ['name', 'artist', 'year'])
+                self.add_table_items(self.selected_artist.albums.values(), self.artist_page_album_list, ['Album', 'Artist', 'Year'], ['name', 'artist', 'year'])
                 self.switch_content_view('Artist')
             elif column_index == 1:
                 pass
@@ -191,7 +211,7 @@ class PlayerWindow(Ui_MainWindow):
         column_index = current_display_table.currentColumn()
         if column_index == 0:
             self.current_playing_list.clear()
-            for song in associated_library_list:
+            for song in associated_library_list.values():
                 self.current_playing_list.addMedia(QMediaContent(QtCore.QUrl.fromLocalFile(song.song_file)))
             self.player.setPlaylist(self.current_playing_list)
             if row_index != 0:
@@ -205,12 +225,12 @@ class PlayerWindow(Ui_MainWindow):
     
     def add_library_location(self):
         selected_folder = QtWidgets.QFileDialog.getExistingDirectory()
-        if selected_folder:     
+        if selected_folder:
             self.music_library.add_library_file_location(selected_folder)
             self.file_locations_list.addItem(selected_folder)
-            self.add_table_items(self.music_library.songs, self.song_list, ['Title', 'Artist', 'Album', 'Duration'], ['title', 'artist', 'album', 'duration_formatted'])
-            self.add_table_items(self.music_library.albums, self.album_list, ['Album', 'Artist', 'Year'], ['name', 'artist', 'year'])
-            self.add_table_items(self.music_library.artists, self.artist_list, ['Artist'], ['name'])
+            self.add_table_items(self.music_library.songs.values(), self.song_list, ['Title', 'Artist', 'Album', 'Duration'], ['title', 'artist', 'album', 'duration_formatted'])
+            self.add_table_items(self.music_library.albums.values(), self.album_list, ['Album', 'Artist', 'Year'], ['name', 'artist', 'year'])
+            self.add_table_items(self.music_library.artists.values(), self.artist_list, ['Artist'], ['name'])
         else:
             pass
 
@@ -254,25 +274,97 @@ class PlayerWindow(Ui_MainWindow):
         self.playing_song.adjustSize()
         self.playing_artist.setText(album_artist)
     
-    def create_playlist(self, playlist_name):
-        self.music_library.create_playlist(playlist_name)
-        self.add_table_items(self.music_library.playlists.values(), self.playlist_list, ['Playlist'], ['name'])
-        for value in self.music_library.playlists.values():
-            print(value.name)
+    def create_playlist(self):
+        playlist_name = self.input_playlist_name.text()
+        if playlist_name.replace(' ', '') != '':
+            self.music_library.create_playlist(playlist_name)
+            self.add_table_items(self.music_library.playlists.values(), self.playlist_list, ['Playlist'], ['name'])
+        self.input_playlist_name.clear()
 
-    def song_context_menu(self, selected_table, associated_library_list):
+    def song_library_context_menu(self, selected_table, associated_library_list):
         row_index = selected_table.currentRow()
         column_index = selected_table.currentColumn()
         if row_index != 0:
             if column_index == 0:
                 song_context_menu = QtWidgets.QMenu(selected_table)
                 sub_menu = QtWidgets.QMenu('Add to Playlist', song_context_menu)
-                print(self.music_library.playlists)
                 for key in self.music_library.playlists.keys():
                     sub_menu.addAction(key)
                 song_context_menu.addMenu(sub_menu)
-                song_context_menu.exec_(QtGui.QCursor.pos())
+                song_context_menu.exec
+                try:
+                    option_pressed = song_context_menu.exec_(QtGui.QCursor.pos()).text()
+                    selected_song = selected_table.item(row_index, column_index).text()
+                    if self.music_library.get_playlist(option_pressed):
+                        self.add_to_playlist(option_pressed, associated_library_list[selected_song])
+                except:
+                    pass
+            else:
+                pass
+        else:
+            pass
+    
+    def add_to_playlist(self, playlist_clicked, selected_song):
+        self.music_library.add_playlist_song(playlist_clicked, selected_song)
 
+    def remove_from_playlist(self, playlist_clicked, selected_song):
+        self.music_library.remove_playlist_song(playlist_clicked, selected_song)
+        self.add_table_items(self.selected_playlist.songs.values(), self.playlist_page_song_list, ['Title', 'Artist', 'Album', 'Duration'], ['title', 'artist', 'album', 'duration_formatted'])
+
+    def delete_playlist(self, playlist_clicked):
+        self.music_library.delete_playlist(playlist_clicked)
+        self.add_table_items(self.music_library.playlists.values(), self.playlist_list, ['Playlist'], ['name'])
+
+    def playlist_double_clicked(self):
+        row_index = self.playlist_list.currentRow()
+        column_index = self.playlist_list.currentColumn()
+        if row_index != 0:
+            selected_playlist = self.playlist_list.item(row_index, column_index).text()
+            self.selected_playlist = self.music_library.playlists[selected_playlist]
+            if column_index == 0:
+                self.playlist_page_playlist.setText(self.selected_playlist.name)
+                self.add_table_items(self.selected_playlist.songs.values(), self.playlist_page_song_list, ['Title', 'Artist', 'Album', 'Duration'], ['title', 'artist', 'album', 'duration_formatted'])
+                self.switch_content_view('Playlist')
+            elif column_index == 1:
+                pass
+            else:
+                pass
+
+    def song_playlist_context_menu(self):
+        row_index = self.playlist_page_song_list.currentRow()
+        column_index = self.playlist_page_song_list.currentColumn()
+        if row_index != 0:
+            if column_index == 0:
+                song_context_menu = QtWidgets.QMenu(self.playlist_page_song_list)
+                song_context_menu.addAction('Remove From Playlist')
+                song_context_menu.exec
+                try:
+                    option_pressed = song_context_menu.exec_(QtGui.QCursor.pos()).text()
+                    selected_song = self.playlist_page_song_list.item(row_index, column_index).text()
+                    if option_pressed == 'Remove From Playlist':
+                        self.remove_from_playlist(self.selected_playlist, self.selected_playlist.songs[selected_song])
+                except:
+                    pass
+            else:
+                pass
+        else:
+            pass
+    
+    def playlist_list_context_menu(self):
+        row_index = self.playlist_list.currentRow()
+        column_index = self.playlist_list.currentColumn()
+        if row_index != 0:
+            if column_index == 0:
+                song_context_menu = QtWidgets.QMenu(self.playlist_list)
+                song_context_menu.addAction('Delete Playlist')
+                song_context_menu.exec
+                try:
+                    option_pressed = song_context_menu.exec_(QtGui.QCursor.pos()).text()
+                    selected_playlist = self.playlist_list.item(row_index, column_index).text()
+                    if option_pressed == 'Delete Playlist':
+                        self.delete_playlist(self.music_library.playlists[selected_playlist])
+                except:
+                    pass
             else:
                 pass
         else:

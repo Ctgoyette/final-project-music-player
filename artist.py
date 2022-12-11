@@ -4,7 +4,7 @@ class Artist:
         Initializes all attributes
         '''
         self.artist_name = artist_name
-        self.artist_albums = []
+        self.artist_albums = dict()
         self.artist_album_count = len(self.artist_albums)
 
     def get_name(self):
@@ -27,7 +27,7 @@ class Artist:
         '''
         Adds the specifed album to the artist's catalogue
         '''
-        self.artist_albums.append(album_to_add)
+        self.artist_albums[album_to_add.name] = album_to_add
         self.artist_album_count = len(self.artist_albums)
 
     def remove_album(self, album_to_remove):

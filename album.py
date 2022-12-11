@@ -2,7 +2,7 @@ import song
 
 class Album:
     def __init__(self, album_name = '', album_artist = '', album_year = '', album_genre = ''):
-        self.album_songs = []
+        self.album_songs = dict()
         self.album_name = album_name
         self.album_artist = album_artist
         self.album_year = album_year
@@ -64,7 +64,7 @@ class Album:
         '''
         Adds a song to an album
         '''
-        self.album_songs.append(song_to_add)
+        self.album_songs[song_to_add.title] = song_to_add
         self.album_song_count = len(self.album_songs)
 
     def remove_song(self, song_to_remove):

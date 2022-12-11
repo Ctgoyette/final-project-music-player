@@ -4,18 +4,18 @@ from song import *
 from album import *
 import os
 import eyed3
+import operator
 
 class MusicLibrary:
     def __init__(self):
-        self.list_of_songs = []
-        self.list_of_albums = []
-        self.list_of_artists = []
+        self.list_of_songs = dict()
+        self.list_of_albums = dict()
+        self.list_of_artists = dict()
         self.dict_of_playlists = dict()
         self.num_songs = len(self.list_of_songs)
         self.num_albums = len(self.list_of_albums)
         self.num_artists = len(self.list_of_artists)
         self.library_file_locations = []
-
 
     def find_songs(self, location):
         for root, dirs, files in os.walk(location):
@@ -27,6 +27,15 @@ class MusicLibrary:
                     file_path = (os.path.join(root, file))
                     self.add_song(file_path)
 
+                elif file.endswith('.m3u'):
+                    file_path = (os.path.join(root, file))
+                    file_name = os.path.basename(file_path)
+                    file_name_raw = os.path.splitext(file_name)
+                    self.create_playlist(file_name_raw[0], file_path)
+
+                else:
+                    pass
+
     def add_song(self, file_location):
         '''
         Adds the song at the specified file location to the list of songs in the library. Also adds the album and
@@ -34,7 +43,7 @@ class MusicLibrary:
         '''
         new_song = Song(file_location)
         is_add_album = True
-        for album in self.list_of_albums:
+        for album in self.list_of_albums.values():
             if new_song.album == album.name:
                 is_add_album = False
                 album.add_song(new_song)
@@ -43,8 +52,8 @@ class MusicLibrary:
                 pass
         if is_add_album:
             self.add_album(new_song)
-        self.list_of_songs.append(new_song)
-        self.num_songs = len(self.list_of_songs)
+        self.list_of_songs[new_song.title] = new_song
+        self.num_songs = len(self.list_of_songs.keys())
     
     def add_album(self, song_with_album_info):
         '''
@@ -52,7 +61,7 @@ class MusicLibrary:
         '''
         new_album = Album(song_with_album_info.album, song_with_album_info.artist, song_with_album_info.year, song_with_album_info.genre)
         is_add_artist = True
-        for artist in self.list_of_artists:
+        for artist in self.list_of_artists.values():
             if new_album.artist == artist.name:
                 is_add_artist = False
                 artist.add_album(new_album)
@@ -61,7 +70,7 @@ class MusicLibrary:
                 pass
         if is_add_artist:
             self.add_artist(new_album)
-        self.list_of_albums.append(new_album)
+        self.list_of_albums[new_album.name] = new_album
         self.num_albums = len(self.list_of_albums)
         new_album.add_song(song_with_album_info)
 
@@ -70,7 +79,7 @@ class MusicLibrary:
         Adds the specified artist
         '''
         new_artist = Artist(album_with_artist_info.artist)
-        self.list_of_artists.append(new_artist)
+        self.list_of_artists[new_artist.name] = new_artist
         self.num_artists = len(self.list_of_artists)
         new_artist.add_album(album_with_artist_info)
 
@@ -91,18 +100,27 @@ class MusicLibrary:
             - (list) list of objects to sort => list_to_sort
             - (string) name of the attribute to sort by => sort_attribute
         '''
-        for current_index in range(1, len(list_to_sort)):
-                sort_key = getattr(list_to_sort[current_index], sort_attribute)
-                object_key = list_to_sort[current_index]
+        if type(list_to_sort) is not dict:
+            for current_index in range(1, len(list_to_sort)):
+                    sort_key = getattr(list_to_sort[current_index], sort_attribute)
+                    object_key = list_to_sort[current_index]
 
-                last_index = current_index - 1
-                while last_index >= 0 and sort_key < getattr(list_to_sort[last_index], sort_attribute):
-                    list_to_sort[last_index + 1] = list_to_sort[last_index]
-                    last_index -= 1
-                list_to_sort[last_index + 1] = object_key
+                    last_index = current_index - 1
+                    while last_index >= 0 and sort_key < getattr(list_to_sort[last_index], sort_attribute):
+                        list_to_sort[last_index + 1] = list_to_sort[last_index]
+                        last_index -= 1
+                    list_to_sort[last_index + 1] = object_key
+        else:
+            temp_dict = dict()
+            for key in (sorted(list_to_sort.values(), key=operator.attrgetter(sort_attribute))):
+                try:
+                    temp_dict[key.title] = key
+                except:
+                    temp_dict[key.name] = key
+            list_to_sort = temp_dict
     
     def sort_all_album_tracks(self):
-        for album in self.list_of_albums:
+        for album in self.list_of_albums.values():
             self.sort_object_list(album.songs, 'track_num')
 
     def sort_all_albums(self):
@@ -114,9 +132,9 @@ class MusicLibrary:
     def sort_all_songs(self):
         self.sort_all_album_tracks()
         self.list_of_songs.clear()
-        for album in self.list_of_albums:
-            for song in album.songs:
-                self.list_of_songs.append(song)
+        for album in self.list_of_albums.values():
+            for song in album.songs.values():
+                self.list_of_songs[song.title] = song
     
     def add_library_file_location(self, location = None):
         self.library_file_locations.append(location)
@@ -126,22 +144,52 @@ class MusicLibrary:
         self.sort_all_artists()
         self.sort_all_songs()
 
-    def create_playlist(self, playlist_name):
+    def create_playlist(self, playlist_name, file_location = None):
         '''
         Creates a new playlist with the specified name
         '''
-        new_playlist = Playlist(playlist_name)
+        if file_location is None:
+            new_playlist = Playlist(playlist_name)
+        else:
+            playlist_songs = dict()
+            playlist_file= open(file_location, 'r')
+            for line in playlist_file.readlines():
+                if line == '\n' or line[0] == '#':
+                    pass
+                else:
+                    raw_file_location = line.strip('\n')
+                    self.add_song(raw_file_location)
+                    song_file = eyed3.load(raw_file_location)
+                    song_title = song_file.tag.title
+                    playlist_songs[song_title] = self.list_of_songs[song_title]
+            new_playlist = Playlist(playlist_name, file_location, playlist_songs)
         self.dict_of_playlists[playlist_name] = new_playlist
-
+        
     def delete_playlist(self, playlist_to_remove):
         '''
         Deletes the specified playlist
         '''
+        if os.path.exists(playlist_to_remove.playlist_file_location):
+            os.remove(playlist_to_remove.playlist_file_location)
+        self.playlists.pop(playlist_to_remove.name)
+
+    def get_playlist(self, playlist):
+        '''
+        Returns the specified playlist
+        '''
+        return self.dict_of_playlists[playlist]
+    
     def get_playlists(self):
         '''
         Gets all of the playlists in the library
         '''
         return self.dict_of_playlists
+
+    def add_playlist_song(self, playlist, song):
+        self.dict_of_playlists[playlist].add_song(song)
+
+    def remove_playlist_song(self, playlist, song):
+        playlist.remove_song(song)
     
     artists = property(fget = get_artists, doc = 'Artists in the libryar')
     albums = property(fget = get_albums, doc = 'Albums in the library')
