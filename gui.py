@@ -209,12 +209,12 @@ class PlayerWindow(Ui_MainWindow):
     def song_double_clicked(self, current_display_table, associated_library_list):
         row_index = current_display_table.currentRow()
         column_index = current_display_table.currentColumn()
-        if column_index == 0:
-            self.current_playing_list.clear()
-            for song in associated_library_list.values():
-                self.current_playing_list.addMedia(QMediaContent(QtCore.QUrl.fromLocalFile(song.song_file)))
-            self.player.setPlaylist(self.current_playing_list)
-            if row_index != 0:
+        if row_index != 0:
+            if column_index == 0:
+                self.current_playing_list.clear()
+                for song in associated_library_list.values():
+                    self.current_playing_list.addMedia(QMediaContent(QtCore.QUrl.fromLocalFile(song.song_file)))
+                self.player.setPlaylist(self.current_playing_list)
                 self.frame_playing_media.show()
                 self.current_playing_list.setCurrentIndex(row_index - 1)
                 self.play_pause()
@@ -291,12 +291,17 @@ class PlayerWindow(Ui_MainWindow):
                 for key in self.music_library.playlists.keys():
                     sub_menu.addAction(key)
                 song_context_menu.addMenu(sub_menu)
+                song_context_menu.addAction('Add to Queue')
                 song_context_menu.exec
                 try:
                     option_pressed = song_context_menu.exec_(QtGui.QCursor.pos()).text()
                     selected_song = selected_table.item(row_index, column_index).text()
-                    if self.music_library.get_playlist(option_pressed):
+                    if option_pressed == 'Add to Queue':
+                        self.queue_song(associated_library_list[selected_song])
+                    elif self.music_library.get_playlist(option_pressed):
                         self.add_to_playlist(option_pressed, associated_library_list[selected_song])
+                    else:
+                        pass
                 except:
                     pass
             else:
@@ -337,12 +342,17 @@ class PlayerWindow(Ui_MainWindow):
             if column_index == 0:
                 song_context_menu = QtWidgets.QMenu(self.playlist_page_song_list)
                 song_context_menu.addAction('Remove From Playlist')
+                song_context_menu.addAction('Add to Queue')
                 song_context_menu.exec
                 try:
                     option_pressed = song_context_menu.exec_(QtGui.QCursor.pos()).text()
                     selected_song = self.playlist_page_song_list.item(row_index, column_index).text()
                     if option_pressed == 'Remove From Playlist':
                         self.remove_from_playlist(self.selected_playlist, self.selected_playlist.songs[selected_song])
+                    elif option_pressed == 'Add to Queue':
+                        self.queue_song(self.selected_playlist.songs[selected_song])
+                    else:
+                        pass
                 except:
                     pass
             else:
@@ -369,6 +379,10 @@ class PlayerWindow(Ui_MainWindow):
                 pass
         else:
             pass
+
+    def queue_song(self, song):
+        index_to_insert = self.current_playing_list.currentIndex() + 1
+        self.current_playing_list.insertMedia(index_to_insert, QMediaContent(QtCore.QUrl.fromLocalFile(song.song_file)))
 
         
 
