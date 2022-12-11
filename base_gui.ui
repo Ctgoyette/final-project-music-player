@@ -112,6 +112,12 @@
              </property>
              <item>
               <widget class="QPushButton" name="button_library_view">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>35</height>
+                </size>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
@@ -125,17 +131,26 @@
                 <bool>false</bool>
                </property>
                <property name="flat">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="button_playlist_view">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>35</height>
+                </size>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="text">
                 <string>Playlists</string>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -212,12 +227,17 @@
           </property>
           <item>
            <widget class="QPushButton" name="settings_button">
-            <property name="palette">
-             <palette>
-              <active/>
-              <inactive/>
-              <disabled/>
-             </palette>
+            <property name="minimumSize">
+             <size>
+              <width>35</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>35</width>
+              <height>35</height>
+             </size>
             </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
@@ -227,6 +247,9 @@
             </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -247,7 +270,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="library_view">
        <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -277,6 +300,12 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
                <width>100</width>
@@ -290,6 +319,9 @@
                <weight>50</weight>
                <bold>false</bold>
               </font>
+             </property>
+             <property name="frame">
+              <bool>false</bool>
              </property>
              <item>
               <property name="text">
@@ -492,8 +524,17 @@
               </property>
               <item>
                <widget class="QPushButton" name="button_create_playlist">
+                <property name="minimumSize">
+                 <size>
+                  <width>120</width>
+                  <height>30</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Create Playlist</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -574,6 +615,12 @@
            </property>
            <item>
             <widget class="QPushButton" name="album_page_back_button">
+             <property name="minimumSize">
+              <size>
+               <width>75</width>
+               <height>35</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Nirmala UI</family>
@@ -582,8 +629,14 @@
                <bold>false</bold>
               </font>
              </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -818,8 +871,20 @@
            </property>
            <item>
             <widget class="QPushButton" name="artist_page_back_button">
+             <property name="minimumSize">
+              <size>
+               <width>75</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -1025,12 +1090,18 @@
             <widget class="QPushButton" name="button_add_location">
              <property name="minimumSize">
               <size>
-               <width>120</width>
-               <height>0</height>
+               <width>135</width>
+               <height>35</height>
               </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="text">
               <string>Add Location</string>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -1411,6 +1482,9 @@
                </property>
                <property name="text">
                 <string/>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
                </property>
               </widget>
              </item>

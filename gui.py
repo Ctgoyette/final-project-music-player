@@ -11,6 +11,7 @@ import qdarktheme
 class PlayerWindow(Ui_MainWindow):
     def __init__(self):
         self.app = QtWidgets.QApplication(sys.argv)
+        self.app.setPalette(qdarktheme.load_palette())
         self.main_window_setup()
         self.music_library = MusicLibrary()
         self.library_dropdown_artist_index = self.library_view_dropdown.findText('Artists')
@@ -40,6 +41,16 @@ class PlayerWindow(Ui_MainWindow):
         self.player = QMediaPlayer()
         self.playing_media_frame_setup()
         self.playlist_setup()
+        self.button_styling()
+
+    def button_styling(self):
+        button_styling = "QPushButton {color : rgb(230, 230, 230); border-style : solid; border-color : white; border-width : 1px;} QPushButton:hover {color: white; font-weight : bold;}"
+        self.library_view_dropdown.setStyleSheet("QComboBox {background-color : rgb(32, 33, 36); color: rgb(230, 230, 230);} QComboBox:hover {color: white; font-weight : bold;}")
+        self.button_library_view.setStyleSheet(button_styling)
+        self.button_playlist_view.setStyleSheet(button_styling)
+        self.album_page_back_button.setStyleSheet(button_styling)
+        self.artist_page_back_button.setStyleSheet(button_styling)
+        self.button_add_location.setStyleSheet(button_styling)
 
     def initial_table_setup(self):
         self.initial_file_location()
@@ -54,7 +65,6 @@ class PlayerWindow(Ui_MainWindow):
         settings_icon = QtGui.QIcon(r'images\settings_icon.png')
         self.settings_button.setIcon(settings_icon)
         self.settings_button.setIconSize(QtCore.QSize(35, 35))
-        self.settings_button.setStyleSheet("QPushButton {background-color : rgb(240, 240, 240); border : none;} QPushButton:hover {background-color : rgb(250, 250, 250);}")
         self.settings_button.clicked.connect(partial(self.switch_content_view, 'Settings'))
     
     def display_tables_setup(self):
@@ -80,21 +90,22 @@ class PlayerWindow(Ui_MainWindow):
         self.button_add_location.clicked.connect(self.add_library_location)
 
     def playing_media_frame_setup(self):
+        media_button_style = "QToolButton {color : rgb(225, 225, 225); background-color : rgb(40, 40, 40); border-style : solid; border-color: white;} QToolButton:hover {color : white;}"
         play_icon = QtGui.QIcon(r'images\play_button.png')
         self.play_button.setIcon(play_icon)
         self.play_button.setIconSize(QtCore.QSize(50, 50))
-        self.play_button.setStyleSheet("QPushButton {background-color : rgb(240, 240, 240); border : none;}")
+        self.play_button.setStyleSheet(media_button_style)
         self.play_button.clicked.connect(self.play_pause)
         self.button_next_song.clicked.connect(self.play_next)
-        self.button_next_song.setStyleSheet("QToolButton {background-color : rgb(240, 240, 240); border : none;} QToolButton:hover {color : white;}")
+        self.button_next_song.setStyleSheet(media_button_style)
         self.button_previous_song.clicked.connect(self.play_last)
-        self.button_previous_song.setStyleSheet("QToolButton {background-color : rgb(240, 240, 240); border : none;} QToolButton:hover {color : white;}")
+        self.button_previous_song.setStyleSheet(media_button_style)
         self.player.positionChanged.connect(self.update_seekbar)
         self.player.durationChanged.connect(self.update_seekbar_range)
         self.seek_bar.sliderMoved.connect(self.seek_through_song)
         self.frame_playing_media.hide()
         self.player.metaDataChanged.connect(self.meta_data_changed)
-        self.frame_playing_media.setStyleSheet('background-color : grey;')
+        self.frame_playing_media.setStyleSheet('background-color : rgb(40, 40, 40);')
     
     def playlist_setup(self):
         self.button_create_playlist.clicked.connect(self.create_playlist)

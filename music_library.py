@@ -152,22 +152,18 @@ class MusicLibrary:
         self.sort_object_list(self.list_of_artists, 'name')
     
     def sort_all_songs(self):
-        self.sort_all_album_tracks()
-        self.list_of_songs.clear()
-        for artist in self.list_of_artists.values():
-            for album in artist.artist_albums.values():
-                for song in album.songs.values():
-                    self.list_of_songs[song.title] = song
+        self.sort_object_list(self.list_of_songs, 'title')
     
     def add_library_file_location(self, location = None):
         self.library_file_locations.append(location)
         self.find_songs(location)
         self.sort_all_albums()
+        self.sort_all_album_tracks()
         self.sort_all_artists()
         self.sort_all_songs()
-        for value in self.list_of_songs.values():
-            print(value.artist)
-        print('\n')
+        # for value in self.list_of_songs.values():
+        #     print(value.artist)
+        # print('\n')
 
     def create_playlist(self, playlist_name, file_location = None):
         '''
