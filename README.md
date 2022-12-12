@@ -1,4 +1,4 @@
-Note: This README File is not properly formatted when viewed normally. For best viewing, click on the README and click on 'open with source blob'.
+Note: This README File is not properly formatted when viewed normally. For best viewing, click on the README and click on 'display the source blob'.
 
 SUMMARY:
 
