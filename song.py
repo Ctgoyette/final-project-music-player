@@ -3,7 +3,7 @@ eyed3.log.setLevel("ERROR")
 class Song:
     def __init__(self, file):
         '''
-        Initializes all attributes
+        Initializes all necessary attributes. If the necessary metadata does not exist in the file, sets all attributes to 'Unknown'
         '''
         self.audio_file = eyed3.load(file)
         try:
@@ -25,24 +25,19 @@ class Song:
             self.song_genre = 'Unknown'
             self.track_num = 'Unknown'
         self.song_file = file
-        # print(self.song_title)
 
     def convert_duration_to_display_format(self):
+        '''
+        Converts the song_duration attribute of the object to a string in the format `MM:SS` and returns the result
+        '''
         minutes = int(self.song_duration // 60)
         seconds = int(self.song_duration % 60)
         formatted_duration = f'{minutes:02}:{seconds:02}'
         return formatted_duration
-    
-    def set_unknown(self, attribute, value):
-        try:
-            attribute = value
-        except:
-            attribute = 'Unknown'
-        return attribute
 
     def get_title(self):
         '''
-        Gets the title of the song 
+        Returns the title of the song 
         '''
         return self.song_title
 
@@ -54,7 +49,7 @@ class Song:
 
     def get_artist(self):
         '''
-        Gets the name of the artist of the song 
+        Returns the name of the artist of the song 
         '''
         return self.song_artist
 
@@ -66,7 +61,7 @@ class Song:
 
     def get_duration(self):
         '''
-        Gets the duration of the song 
+        Returns the duration of the song 
         '''
         return self.song_duration
 
@@ -78,13 +73,13 @@ class Song:
 
     def get_duration_formatted(self):
         '''
-        Gets the duration of the song 
+        Returns the duration of the song 
         '''
         return self.song_duration_formatted
 
     def get_album(self):
         '''
-        Gets the name of the album that the song belongs to
+        Returns the name of the album that the song belongs to
         '''
         return self.song_album
 
@@ -96,7 +91,7 @@ class Song:
 
     def get_year(self):
         '''
-        Gets the release year of the song 
+        Returns the release year of the song 
         '''
         return self.song_year
 
@@ -108,7 +103,7 @@ class Song:
 
     def get_genre(self):
         '''
-        Gets the genre of the song 
+        Returns the genre of the song 
         '''
         return self.song_genre
 
