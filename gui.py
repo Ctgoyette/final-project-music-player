@@ -88,6 +88,7 @@ class PlayerWindow(Ui_MainWindow):
         self.MainWindow = QtWidgets.QMainWindow()
         self.setupUi(self.MainWindow)
         self.verticalLayout_6.setContentsMargins(0,11,0,0)
+        self.MainWindow.setWindowTitle('Music Player')
 
     def settings_setup(self):
         '''
