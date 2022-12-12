@@ -1,3 +1,5 @@
+Note: This README File is not properly formatted when viewed on github. Open in a text editor for best viewing
+
 SUMMARY:
 
    This program is a music player application that allows the user to browse, play, and manage MP3 files on their computer using a graphical user interface (GUI). The program uses the cross-platform “PyQt5” library to create the GUI for the application. The code also makes use of the “qdarktheme” library to apply a dark color scheme to the GUI, giving the application an aesthetically pleasing look.
