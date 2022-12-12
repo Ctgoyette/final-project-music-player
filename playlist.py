@@ -24,7 +24,7 @@ class Playlist:
         elif sys.platform == "win32":
             default_folder = os.path.expanduser("~\Music")
         else:
-            pass
+            default_folder = os.getcwd()
         return default_folder
 
     def create_new_playlist_file(self):
