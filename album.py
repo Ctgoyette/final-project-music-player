@@ -100,4 +100,3 @@ class Album:
     genre = property(fget = get_genre, fset = set_genre, doc = 'Genre of album')
     song_count = property(fget = get_song_count, doc = 'Number of songs in album')
     songs = property(fget = get_songs, doc = 'Songs in album')
-

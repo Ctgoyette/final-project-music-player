@@ -8,7 +8,6 @@ class Playlist:
         '''
         self.playlist_name = playlist_name
         self.playlist_songs = playlist_songs
-        self.playlist_duration = 0
         self.playlist_file_location = playlist_file_location
         self.num_songs = len(self.playlist_songs)
         if playlist_file_location is None:

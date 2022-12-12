@@ -277,9 +277,9 @@ class PlayerWindow(Ui_MainWindow):
         row_index = current_display_table.currentRow()
         column_index = current_display_table.currentColumn()
         if row_index != 0:
-            selected_album = current_display_table.item(row_index, column_index).text()
-            self.selected_album = associated_library_list[selected_album]
             if column_index == 0:
+                selected_album = current_display_table.item(row_index, column_index).text()
+                self.selected_album = associated_library_list[selected_album]
                 self.album_page_album.setText(self.selected_album.name)
                 self.album_page_artist.setText(self.selected_album.artist)
                 self.album_page_year.setText(self.selected_album.year)
@@ -583,7 +583,6 @@ class PlayerWindow(Ui_MainWindow):
 ui = PlayerWindow()
 # Shows the application window and automatically maximizes it
 ui.MainWindow.showMaximized()
-
 # Allows window to open before automatcally loading all songs and playlists in library (Windows) in case the library is very large
 ui.initial_table_setup()
 sys.exit(ui.app.exec_())
