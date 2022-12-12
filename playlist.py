@@ -1,18 +1,23 @@
 import sys
 import os
-import eyed3
 
 class Playlist:
     def __init__(self, playlist_name, playlist_file_location = None, playlist_songs = dict()):
+        '''
+        Initializes all necessary attributes
+        '''
         self.playlist_name = playlist_name
         self.playlist_songs = playlist_songs
         self.playlist_duration = 0
         self.playlist_file_location = playlist_file_location
         self.num_songs = len(self.playlist_songs)
         if playlist_file_location is None:
-            self.create_new_playlist()
+            self.create_new_playlist_file()
     
     def get_default_folder(self):
+        '''
+        Returns the default folder for the music library depending on the operating system
+        '''
         if sys.platform == "linux" or sys.platform == "linux2":
             default_folder = os.getcwd()
         elif sys.platform == "darwin":
@@ -23,7 +28,10 @@ class Playlist:
             pass
         return default_folder
 
-    def create_new_playlist(self):
+    def create_new_playlist_file(self):
+        '''
+        Creates a new empty playlist file with the specified name in the default music library folder
+        '''
         default_folder = self.get_default_folder()
         path_to_playlist = os.path.join(default_folder, 'Playlists')
         if not os.path.exists(path_to_playlist):
@@ -35,17 +43,12 @@ class Playlist:
         playlist_file.close()
         self.playlist_file_location = playlist_file_location
 
-    def play(self):
-        '''
-        Plays all the songs in the playlist beginning with the first song
-        '''
-    def shuffle_play(self):
-        '''
-        Plays all the songs in the playlist in a randomly shuffled order
-        '''
     def add_song(self, song_to_add):
         '''
         Adds the specified song to the playlist and to the playlist file
+
+        Inputs:
+            - song_to_add (Song): Song to remove from the playlist
         '''
         self.playlist_songs[song_to_add.title] = song_to_add
         playlist_file = open(self.playlist_file_location, 'a')
@@ -54,7 +57,10 @@ class Playlist:
 
     def remove_song(self, song_to_remove):
         '''
-        Removes the specified song from the playlist
+        Removes the specified song from the playlist and the playlist file
+        
+        Inputs:
+            - song_to_remove (Song): Song to remove from the playlist
         '''
         self.playlist_songs.pop(song_to_remove.title)
         with open(self.playlist_file_location, 'r') as playlist_file:
@@ -72,34 +78,15 @@ class Playlist:
 
     def get_name(self):
         '''
-        Gets the name of the playlist
+        Returns the name of the playlist
         '''
         return self.playlist_name
 
-    def set_name(self):
-        '''
-        Sets the name of the playlist
-        '''
-    def get_duration(self):
-        '''
-        Gets the duration of the playlist
-        '''
-    def set_duration(self, duration_to_set):
-        '''
-        Sets the duration of the playlist to the specified value
-        '''
     def get_songs(self):
         '''
-        Gets all the songs in the playlist
+        Returns all the songs in the playlist
         '''
         return self.playlist_songs
-
-    def get_song_count(self):
-        '''
-        Gets the number of songs in the playlist
-        '''
     
-    name = property(fget = get_name, fset = set_name, doc = 'Name of playlist')
-    duration = property(fget = get_duration, fset = set_duration, doc = 'Duration of playlist')
+    name = property(fget = get_name, doc = 'Name of playlist')
     songs = property(fget = get_songs, doc = 'Songs in the playlist')
-    song_count = property(fget = get_song_count, doc = 'Number of songs in playlist')

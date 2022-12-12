@@ -3,7 +3,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtMultimedia import *
 from base_gui import Ui_MainWindow
 from music_library import MusicLibrary
-import eyed3
 import sys
 import os
 import qdarktheme

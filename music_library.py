@@ -4,7 +4,6 @@ from song import *
 from album import *
 import os
 import eyed3
-import operator
 
 class MusicLibrary:
     def __init__(self):
