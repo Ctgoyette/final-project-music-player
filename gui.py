@@ -14,6 +14,22 @@ class PlayerWindow(Ui_MainWindow):
         self.app.setPalette(qdarktheme.load_palette())
         self.main_window_setup()
         self.music_library = MusicLibrary()
+        self.player = QMediaPlayer()
+        self.current_playing_list = QMediaPlaylist()
+        self.library_page_setup()
+        self.artist_and_album_pages_setup()
+        self.settings_button_setup()
+        self.add_location_button_setup()
+        self.playing_media_frame_setup()
+        self.playlist_setup()
+        self.button_styling()
+        self.last_content_page_index_album = 0
+        self.last_content_page_index_artist = 0
+        self.selected_artist = None
+        self.selected_album = None
+        self.selected_playlist = None
+
+    def library_page_setup(self):
         self.library_dropdown_artist_index = self.library_view_dropdown.findText('Artists')
         self.library_dropdown_album_index = self.library_view_dropdown.findText('Albums')
         self.library_dropdown_song_index = self.library_view_dropdown.findText('Tracks')
@@ -21,27 +37,18 @@ class PlayerWindow(Ui_MainWindow):
         self.album_list.itemDoubleClicked.connect(partial(self.album_double_clicked, self.album_list, self.music_library.albums))
         self.artist_list.itemDoubleClicked.connect(self.artist_double_clicked)
         self.song_list.itemDoubleClicked.connect(partial(self.song_double_clicked, self.song_list, self.music_library.songs))
-        self.switch_library_view()
         self.button_library_view.clicked.connect(partial(self.switch_content_view, 'Library'))
         self.button_playlist_view.clicked.connect(partial(self.switch_content_view, 'Playlists'))
-        self.last_content_page_index_album = 0
-        self.last_content_page_index_artist = 0
+        self.switch_library_view()
+        self.switch_content_view('Library')
+    
+    def artist_and_album_pages_setup(self):
         self.album_page_back_button.clicked.connect(partial(self.switch_content_view, 'Album_Previous'))
         self.artist_page_back_button.clicked.connect(partial(self.switch_content_view, 'Artist_Previous'))
-        self.selected_artist = None
-        self.selected_album = None
-        self.selected_playlist = None
-        self.current_playing_list = QMediaPlaylist()
         self.artist_page_album_list.itemDoubleClicked.connect(lambda: self.album_double_clicked(self.artist_page_album_list, self.selected_artist.albums))
         self.album_page_song_list.itemDoubleClicked.connect(lambda: self.song_double_clicked(self.album_page_song_list, self.selected_album.songs))
-        self.switch_content_view('Library')
         self.album_cover_display.setPixmap(QtGui.QPixmap(r'images\album-cover-placeholder.jpg').scaled(300, 300, QtCore.Qt.KeepAspectRatioByExpanding))
-        self.settings_button_setup()
-        self.add_location_button_setup()
-        self.player = QMediaPlayer()
-        self.playing_media_frame_setup()
-        self.playlist_setup()
-        self.button_styling()
+
 
     def button_styling(self):
         button_styling = "QPushButton {color : rgb(230, 230, 230); border-style : solid; border-color : white; border-width : 1px;} QPushButton:hover {color: white; font-weight : bold;}"
@@ -51,6 +58,7 @@ class PlayerWindow(Ui_MainWindow):
         self.album_page_back_button.setStyleSheet(button_styling)
         self.artist_page_back_button.setStyleSheet(button_styling)
         self.button_add_location.setStyleSheet(button_styling)
+        self.button_create_playlist.setStyleSheet(button_styling)
 
     def initial_table_setup(self):
         self.initial_file_location()

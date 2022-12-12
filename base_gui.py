@@ -218,7 +218,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setContentsMargins(0, -1, -1, -1)
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
         self.button_create_playlist = QtWidgets.QPushButton(self.frame_10)
-        self.button_create_playlist.setMinimumSize(QtCore.QSize(120, 30))
+        self.button_create_playlist.setMinimumSize(QtCore.QSize(140, 30))
         self.button_create_playlist.setFlat(True)
         self.button_create_playlist.setObjectName("button_create_playlist")
         self.horizontalLayout_14.addWidget(self.button_create_playlist)
@@ -651,7 +651,7 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
 
         self.retranslateUi(MainWindow)
-        self.content_type_view_stack.setCurrentIndex(0)
+        self.content_type_view_stack.setCurrentIndex(1)
         self.library_view_stack.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

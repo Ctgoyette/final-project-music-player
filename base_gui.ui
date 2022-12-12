@@ -270,7 +270,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="library_view">
        <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -526,7 +526,7 @@
                <widget class="QPushButton" name="button_create_playlist">
                 <property name="minimumSize">
                  <size>
-                  <width>120</width>
+                  <width>140</width>
                   <height>30</height>
                  </size>
                 </property>
