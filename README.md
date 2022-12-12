@@ -1,4 +1,4 @@
-Note: This README File is not properly formatted when viewed on github. Open in a text editor for best viewing
+Note: This README File is not properly formatted when viewed normally. For best viewing, click on the README and click on 'open with source blob'.
 
 SUMMARY:
 
