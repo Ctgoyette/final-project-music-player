@@ -45,7 +45,7 @@ class Playlist:
         '''
     def add_song(self, song_to_add):
         '''
-        Adds the specified song to the playlist
+        Adds the specified song to the playlist and to the playlist file
         '''
         self.playlist_songs[song_to_add.title] = song_to_add
         playlist_file = open(self.playlist_file_location, 'a')
