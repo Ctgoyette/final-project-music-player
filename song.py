@@ -44,6 +44,9 @@ class Song:
     def set_title(self, title_to_set):
         '''
         Sets the title of the song to the specified title
+        
+        Inputs:
+            - title_to_set (string): Title to set for the song
         '''
         self.song_title = title_to_set
 
@@ -56,6 +59,9 @@ class Song:
     def set_artist(self, artist_to_set):
         '''
         Sets the name of the artist of the song to the specified artist name
+
+        Inputs:
+            - artist_to_set (string): Artist to set for the song
         '''
         self.song_artist = artist_to_set
 
@@ -68,6 +74,9 @@ class Song:
     def set_duration(self, duration_to_set):
         '''
         Sets the duration of the song to the specified duration
+
+        Inputs:
+            - duration_to_set (float): Duration to set for the song
         '''
         self.song_duration = duration_to_set
 
@@ -86,6 +95,9 @@ class Song:
     def set_album(self, album_to_set):
         '''
         Sets the name of the album that the song belongs to the specifed album
+
+        Inputs:
+            - album_to_set (string): Album to set for the song
         '''
         self.song_album = album_to_set
 
@@ -98,6 +110,9 @@ class Song:
     def set_year(self, year_to_set):
         '''
         Sets the release year of the song to the specified year
+
+        Inputs:
+            - year_to_set (string): Year to set for the song
         '''
         self.song_year = year_to_set
 
@@ -110,6 +125,9 @@ class Song:
     def set_genre(self, genre_to_set):
         '''
         Sets the genre of the song to the specifed genre
+
+        Inputs:
+            - genre_to_set (string): Genre to set for the song
         '''
         self.song_genre = genre_to_set
     
