@@ -18,9 +18,9 @@ class Artist:
         Sets the name of the artist to the specified name
 
         Inputs:
-            - name_to_set (string): Name to set for the album
+            - name_to_set (string): Name to set for the artist
         '''
-        self.name = name_to_set
+        self.artist_name = name_to_set
 
     def get_albums(self):
         '''
