@@ -172,11 +172,11 @@ class PlayerWindow(Ui_MainWindow):
             pass
         elif sys.platform == "win32":
             music_folder = os.path.expanduser("~\Music")
+            self.music_library.add_library_file_location(music_folder)
+            self.file_locations_list.addItem(music_folder)
+            self.add_table_items(self.music_library.playlists.values(), self.playlist_list, ['Playlist'], ['name'])
         else:
             pass
-        self.music_library.add_library_file_location(music_folder)
-        self.file_locations_list.addItem(music_folder)
-        self.add_table_items(self.music_library.playlists.values(), self.playlist_list, ['Playlist'], ['name'])
             
     def setup_table_resizing(self):
         '''
